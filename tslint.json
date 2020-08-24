@@ -71,6 +71,7 @@
         "one-line": [true, "check-open-brace", "check-catch", "check-else", "check-finally", "check-whitespace"],
         "semicolon": true,
         "switch-default": true,
+        "no-angle-bracket-type-assertion": false,
         "triple-equals": [true, "allow-null-check"],
         "typedef-whitespace": [
             true,
