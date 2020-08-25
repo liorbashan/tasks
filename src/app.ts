@@ -5,9 +5,8 @@ import * as database from './IO/database';
 
 (async () => {
     // const baseDir = __dirname;
-
-    await database.init();
     await http.init();
+    await database.init();
     logger.info('Application running!');
 })().catch((error) => {
     logger.error(error);
