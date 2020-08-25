@@ -1,3 +1,4 @@
+import { Context } from './../models/Context';
 import { UserResolver } from './resolvers/UserResolver';
 import { logger } from './../utils/Logger';
 import { GraphQLSchema } from 'graphql';
@@ -25,11 +26,16 @@ export async function graphQl(server: any): Promise<void> {
 
     const apolloServer = new ApolloServer({
         schema,
-        context: ({ res, req }) => {
+        context: ({ req, res }) => {
             if (debugMode) {
                 logger.info(`Query: ${req.body.operationName}`);
                 logger.info(`Parameters: ` + JSON.stringify(req.body.variables));
             }
+            const ctx: Context = {
+                req,
+                res,
+            };
+            return ctx;
         },
         debug: debugMode,
         tracing: debugMode,

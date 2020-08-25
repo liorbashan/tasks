@@ -21,6 +21,7 @@ export async function init(): Promise<void> {
         cors: true,
         classTransformer: true,
         controllers: [], // and configure it the way you need (controllers, validation, etc.)
+        middlewares: [],
     });
     const port = Number(process.env.PORT);
     await server.listen(port);
