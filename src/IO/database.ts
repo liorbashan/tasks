@@ -14,7 +14,7 @@ export async function init(): Promise<void> {
         await createConnection({
             name: 'default',
             type: PlatformTools.getEnvVariable('DB_DRIVER'),
-            url: `mongodb+srv://${user}:${password}@${host}/${database}`,
+            url: `postgres://${user}:${password}@${host}:${port}/${database}`,
             useNewUrlParser: true,
             useUnifiedTopology: true,
             authSource: 'admin',

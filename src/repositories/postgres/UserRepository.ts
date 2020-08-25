@@ -10,6 +10,8 @@ export class UserRepository implements IUserRepository {
 
     add(data: Partial<UserModel>): Promise<UserModel> {
         throw new Error('Method not implemented.');
+        // const user: UserModel = this.userModelFactory.create(data);
+        // const query = this.getDbConnection().createQueryBuilder().insert(user);
     }
     update(data: Partial<UserModel>): Promise<UserModel> {
         throw new Error('Method not implemented.');
