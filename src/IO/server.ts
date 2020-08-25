@@ -1,3 +1,4 @@
+import { LoginController } from './../controllers/Login';
 import { logger } from './../utils/Logger';
 import 'reflect-metadata';
 import express from 'express';
@@ -20,7 +21,7 @@ export async function init(): Promise<void> {
         // register created express server in routing-controllers
         cors: true,
         classTransformer: true,
-        controllers: [], // and configure it the way you need (controllers, validation, etc.)
+        controllers: [LoginController], // and configure it the way you need (controllers, validation, etc.)
         middlewares: [],
     });
     const port = Number(process.env.PORT);
