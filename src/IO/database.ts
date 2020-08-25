@@ -6,7 +6,7 @@ export async function init(): Promise<void> {
     await createConnection({
         name: 'default',
         type: PlatformTools.getEnvVariable('DB_DRIVER'),
-        url: 'mongodb://mongo_user:YZyU86W6@mongocluster.zycvo.mongodb.net:27017',
+        url: 'mongodb+srv://mongo_user:YZyU86W6@mongocluster.zycvo.mongodb.net/MYMONGO',
         useNewUrlParser: true,
         authSource: 'admin',
         host: process.env.DB_HOST,

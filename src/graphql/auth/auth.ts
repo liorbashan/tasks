@@ -11,7 +11,7 @@ export const isAuth: MiddlewareFn<Context> = ({ context }, next) => {
 
     try {
         const token = authorization.split(' ')[1];
-        const payload = verify(token, process.env.SECRET_JWT_KEY);
+        const payload = verify(token, process.env.SECRET_JWT_KEY as string);
         // console.log(payload);
         context.payload = payload as any;
     } catch (err) {
