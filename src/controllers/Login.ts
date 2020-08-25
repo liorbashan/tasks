@@ -1,12 +1,12 @@
 import { JWTPayload } from './../models/JWTPayload';
 import { User } from './../graphql/types/User';
 import { JsonController } from 'routing-controllers';
-//import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 @JsonController('/login')
 export class LoginController {
-    private async generateJWT(user: User): string {
-        const secret: string = process.env.JWT_SECRET;
+    private generateJWT(user: User): string {
+        const secret: string = process.env.JWT_SECRET as string;
         const payload: JWTPayload = {
             iss: 'Tasks',
             iat: Math.floor(Date.now() / 1000),
@@ -16,6 +16,7 @@ export class LoginController {
             email: user.email,
             groups: user.groups,
         };
-        const token = jwt;
+        const token: string = jwt.sign(payload, secret);
+        return token;
     }
 }
