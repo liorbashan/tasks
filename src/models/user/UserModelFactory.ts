@@ -13,8 +13,8 @@ export class UserModelFactory implements IUserModelFactory {
         if (data.isActive === null || data.isActive === undefined) {
             data.isActive = true;
         }
-        if (data.groups && !Array.isArray(data.groups)) {
-            data.groups = Common.parseCommaDelimitedToArray(data.groups);
+        if (data.groups && Array.isArray(data.groups)) {
+            data.groups = Common.spredArrayToCommaDelimiterString(data.groups);
         }
         if (!data.createdAt) {
             data.createdAt = new Date().toISOString();

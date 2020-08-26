@@ -1,4 +1,4 @@
-import { QueryUserInput } from './../graphql/types/User';
+import { QueryUserInput, UpdateUserInput, AddUserInput } from './../graphql/types/User';
 import { UserModel } from './../models/user/UserModel';
 import { IUserRepository } from './../interfaces/IUserRepository';
 import { Service } from 'typedi';
@@ -7,17 +7,23 @@ import { Service } from 'typedi';
 export class UserService implements IUserRepository {
     constructor(private userRepository: IUserRepository) {}
 
-    async add(data: Partial<UserModel>): Promise<UserModel> {
+    async add(data: Partial<AddUserInput>): Promise<UserModel> {
         const result: UserModel = await this.userRepository.add(data).catch((error) => {
             throw new Error(error);
         });
         return result;
     }
-    update(data: Partial<UserModel>): Promise<UserModel> {
-        throw new Error('Method not implemented.');
+    async update(data: Partial<UpdateUserInput>): Promise<UserModel> {
+        const result: UserModel = await this.userRepository.update(data).catch((error) => {
+            throw new Error(error);
+        });
+        return result;
     }
-    get(data: Partial<QueryUserInput>): Promise<UserModel> {
-        throw new Error('Method not implemented.');
+    async get(data: Partial<QueryUserInput>): Promise<UserModel> {
+        const result: UserModel = await this.userRepository.get(data).catch((error) => {
+            throw new Error(error);
+        });
+        return result;
     }
     async getAll(data?: Partial<QueryUserInput>): Promise<UserModel[]> {
         const result: UserModel[] = await this.userRepository.getAll(data).catch((error) => {

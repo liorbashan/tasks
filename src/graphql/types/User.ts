@@ -1,3 +1,4 @@
+import { Common } from './../../utils/Common';
 import { UserModel } from './../../models/user/UserModel';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
@@ -36,7 +37,11 @@ export class User {
 
     @Field((type) => [String], { nullable: true })
     get groups(): string[] {
-        return this.user.groups;
+        if (!this.user.groups || this.user.groups === '') {
+            return [];
+        } else {
+            return Common.parseCommaDelimitedToArray(this.user.groups);
+        }
     }
 
     @Field()
@@ -62,6 +67,24 @@ export class AddUserInput {
     phone?: string;
     @Field((type) => [String], { nullable: true })
     groups?: string[];
+}
+
+@InputType()
+export class UpdateUserInput {
+    @Field()
+    id: string;
+    @Field({ nullable: true })
+    firstName?: string;
+    @Field({ nullable: true })
+    lastName?: string;
+    @Field({ nullable: true })
+    email?: string;
+    @Field({ nullable: true })
+    phone?: string;
+    @Field((type) => [String], { nullable: true })
+    groups?: string[];
+    @Field({ nullable: true })
+    isActive: boolean;
 }
 
 @InputType()
