@@ -11,6 +11,8 @@ export async function init(): Promise<void> {
         const driver: string = process.env.DB_DRIVER as string;
         const port: string = process.env.DB_PORT as string;
         const debug: string = process.env.DB_DEBUG as string;
+        const ssl: string = process.env.DB_SSL as string;
+
         await createConnection({
             name: 'default',
             type: PlatformTools.getEnvVariable('DB_DRIVER'),
@@ -30,7 +32,7 @@ export async function init(): Promise<void> {
                 enableArithAbort: true,
                 encrypt: true,
             },
-            ssl: true,
+            ssl: ssl === 'true' ? true : false,
             synchronize: true,
             logging: debug === 'true' ? true : false,
         })

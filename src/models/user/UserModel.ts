@@ -1,7 +1,10 @@
 export class UserModel {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     groups: string[];
+    phone: string;
     isActive: boolean;
+    createdAt: string;
 }

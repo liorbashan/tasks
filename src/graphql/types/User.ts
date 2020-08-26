@@ -1,5 +1,5 @@
 import { UserModel } from './../../models/user/UserModel';
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, InputType } from 'type-graphql';
 
 @ObjectType()
 export class User {
@@ -15,8 +15,13 @@ export class User {
     }
 
     @Field()
-    get name(): string {
-        return this.user.name;
+    get firstName(): string {
+        return this.user.firstName;
+    }
+
+    @Field()
+    get lastName(): string {
+        return this.user.lastName;
     }
 
     @Field()
@@ -24,7 +29,12 @@ export class User {
         return this.user.email;
     }
 
-    @Field({ nullable: true })
+    @Field()
+    get phone(): string {
+        return this.user.phone;
+    }
+
+    @Field((type) => [String], { nullable: true })
     get groups(): string[] {
         return this.user.groups;
     }
@@ -33,4 +43,41 @@ export class User {
     get isActive(): boolean {
         return this.user.isActive;
     }
+
+    @Field()
+    get createdAt(): string {
+        return this.user.createdAt;
+    }
+}
+
+@InputType()
+export class AddUserInput {
+    @Field()
+    firstName: string;
+    @Field()
+    lastName: string;
+    @Field()
+    email: string;
+    @Field({ nullable: true })
+    phone?: string;
+    @Field((type) => [String], { nullable: true })
+    groups?: string[];
+}
+
+@InputType()
+export class QueryUserInput {
+    @Field({ nullable: true })
+    firstName?: string;
+
+    @Field({ nullable: true })
+    lastName?: string;
+
+    @Field({ nullable: true })
+    email?: string;
+
+    @Field({ nullable: true })
+    id?: string;
+
+    @Field({ nullable: true })
+    isActive?: boolean;
 }
