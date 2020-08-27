@@ -3,7 +3,7 @@ export class UserModel {
     firstName: string;
     lastName: string;
     email: string;
-    groups: string;
+    spaceId?: string;
     phone: string;
     isActive: boolean;
     createdAt: string;

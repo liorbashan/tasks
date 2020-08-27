@@ -1,4 +1,3 @@
-import { Common } from './../../utils/Common';
 import { UserModel } from './../../models/user/UserModel';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
@@ -35,13 +34,9 @@ export class User {
         return this.user.phone;
     }
 
-    @Field((type) => [String], { nullable: true })
-    get groups(): string[] {
-        if (!this.user.groups || this.user.groups === '') {
-            return [];
-        } else {
-            return Common.parseCommaDelimitedToArray(this.user.groups);
-        }
+    @Field((type) => String, { nullable: true })
+    get spaceId(): string {
+        return this.user.spaceId ? this.user.spaceId : 'undefined';
     }
 
     @Field()
@@ -65,8 +60,8 @@ export class AddUserInput {
     email: string;
     @Field({ nullable: true })
     phone?: string;
-    @Field((type) => [String], { nullable: true })
-    groups?: string[];
+    @Field({ nullable: true })
+    spaceId?: string;
 }
 
 @InputType()
@@ -81,8 +76,8 @@ export class UpdateUserInput {
     email?: string;
     @Field({ nullable: true })
     phone?: string;
-    @Field((type) => [String], { nullable: true })
-    groups?: string[];
+    @Field({ nullable: true })
+    spaceId?: string;
     @Field({ nullable: true })
     isActive: boolean;
 }
