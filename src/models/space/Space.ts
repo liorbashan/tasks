@@ -1,4 +1,4 @@
-export class SpaceModel {
+export class Space {
     id: string;
     title: string;
     description: string;

@@ -1,4 +1,4 @@
-import { QueryUserInput, UpdateUserInput, AddUserInput } from './../../graphql/types/User';
+import { QueryUserInput, UpdateUserInput, AddUserInput } from '../../graphql/types/UserGql';
 import { logger } from './../../utils/Logger';
 import { UserModelFactory } from './../../models/user/UserModelFactory';
 import { UserModel } from './../../models/user/UserModel';

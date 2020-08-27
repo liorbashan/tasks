@@ -1,8 +1,8 @@
-import { UserModel } from './../../models/user/UserModel';
+import { UserModel } from '../../models/user/UserModel';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
 @ObjectType()
-export class User {
+export class UserGql {
     constructor(protected user: UserModel) {}
 
     getModel(): UserModel {

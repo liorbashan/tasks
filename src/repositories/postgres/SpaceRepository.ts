@@ -1,16 +1,16 @@
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { logger } from './../../utils/Logger';
 import { Connection, getConnection } from 'typeorm';
-import { SpaceModel } from './../../models/space/SpaceModel';
-import { ISpaceModelFactory } from './../../models/space/ISpaceModelFactory';
+import { Space } from '../../models/space/Space';
+import { ISpaceFactory } from '../../models/space/ISpaceFactory';
 import { ISpaceRepository } from '../../interfaces/ISpaceRepository';
-import { SpaceInput } from '../../graphql/types/Space';
+import { SpaceInput } from '../../graphql/types/SpaceGql';
 
 export class SpaceRepository implements ISpaceRepository {
-    constructor(private spaceFactory: ISpaceModelFactory, protected dbConnection?: Connection) {}
+    constructor(private spaceFactory: ISpaceFactory, protected dbConnection?: Connection) {}
 
-    async get(input: SpaceInput): Promise<SpaceModel> {
-        let model: SpaceModel = new SpaceModel();
+    async get(input: SpaceInput): Promise<Space> {
+        let model: Space = new Space();
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -43,8 +43,8 @@ export class SpaceRepository implements ISpaceRepository {
         }
         return model;
     }
-    async getAll(input?: SpaceInput): Promise<SpaceModel[]> {
-        const models: SpaceModel[] = [];
+    async getAll(input?: SpaceInput): Promise<Space[]> {
+        const models: Space[] = [];
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -79,9 +79,9 @@ export class SpaceRepository implements ISpaceRepository {
         }
         return models;
     }
-    async add(input: SpaceInput): Promise<SpaceModel> {
-        let inserted: SpaceModel = new SpaceModel();
-        const spaceModel: SpaceModel = this.spaceFactory.create(input as Partial<SpaceModel>);
+    async add(input: SpaceInput): Promise<Space> {
+        let inserted: Space = new Space();
+        const spaceModel: Space = this.spaceFactory.create(input as Partial<Space>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('spaces').values([spaceModel]);
 
         const dbResult: any = await query.execute().catch((error) => {
@@ -94,8 +94,8 @@ export class SpaceRepository implements ISpaceRepository {
         }
         return inserted;
     }
-    async update(input: SpaceInput): Promise<SpaceModel> {
-        let model: SpaceModel = this.spaceFactory.create(input as Partial<SpaceModel>);
+    async update(input: SpaceInput): Promise<Space> {
+        let model: Space = this.spaceFactory.create(input as Partial<Space>);
         const query = this.getDbConnection()
             .createQueryBuilder()
             .update('spaces')

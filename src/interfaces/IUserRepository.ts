@@ -1,4 +1,4 @@
-import { QueryUserInput, UpdateUserInput, AddUserInput } from './../graphql/types/User';
+import { QueryUserInput, UpdateUserInput, AddUserInput } from '../graphql/types/UserGql';
 import { UserModel } from '../models/user';
 
 export interface IUserRepository {

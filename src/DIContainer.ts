@@ -1,5 +1,5 @@
 import { SpaceService } from './services/SpaceService';
-import { SpaceModelFactory } from './models/space/SpaceModelFactory';
+import { SpaceFactory } from './models/space/SpaceFactory';
 import { SpaceRepository } from './repositories/postgres/SpaceRepository';
 import { ISpaceRepository } from './interfaces/ISpaceRepository';
 import { Container } from 'typedi';
@@ -15,7 +15,7 @@ export async function init(): Promise<void> {
     Container.set('UserService', userService);
 
     // Space:
-    const spaceRepository: ISpaceRepository = new SpaceRepository(new SpaceModelFactory());
+    const spaceRepository: ISpaceRepository = new SpaceRepository(new SpaceFactory());
     const spaceService: ISpaceRepository = new SpaceService(spaceRepository);
     Container.set('SpaceService', spaceService);
 }

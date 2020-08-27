@@ -1,8 +1,8 @@
-import { SpaceModel } from './../../models/space/SpaceModel';
+import { Space } from '../../models/space/Space';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
 ObjectType();
-export class Space {
+export class SpaceGql {
     @Field()
     public id: string;
     @Field()
@@ -12,13 +12,13 @@ export class Space {
     @Field({ nullable: true })
     public imageUrl?: string;
 
-    constructor(protected space: SpaceModel) {
+    constructor(protected space: Space) {
         this.id = space.id;
         this.title = space.title;
         this.description = space.description;
         this.imageUrl = space.imageUrl;
     }
-    get(): Space {
+    get(): SpaceGql {
         return this;
     }
 }

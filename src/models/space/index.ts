@@ -1,3 +1,3 @@
-export * from './ISpaceModelFactory';
-export * from './SpaceModelFactory';
-export * from './SpaceModel';
+export * from './ISpaceFactory';
+export * from './SpaceFactory';
+export * from './Space';
