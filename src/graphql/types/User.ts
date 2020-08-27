@@ -35,8 +35,8 @@ export class User {
     }
 
     @Field((type) => String, { nullable: true })
-    get spaceId(): string {
-        return this.user.spaceId ? this.user.spaceId : 'undefined';
+    get spaceId(): string | null {
+        return this.user.spaceId ? this.user.spaceId : null;
     }
 
     @Field()
