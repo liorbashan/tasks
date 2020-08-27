@@ -4,13 +4,13 @@ import { SpaceRepository } from './repositories/postgres/SpaceRepository';
 import { ISpaceRepository } from './interfaces/ISpaceRepository';
 import { Container } from 'typedi';
 import { UserService } from './services/UserService';
-import { UserModelFactory } from './models/user/UserModelFactory';
+import { UserFactory } from './models/user/UserFactory';
 import { UserRepository } from './repositories/postgres/UserRepository';
 import { IUserRepository } from './interfaces/IUserRepository';
 
 export async function init(): Promise<void> {
     // User
-    const userRepository: IUserRepository = new UserRepository(new UserModelFactory());
+    const userRepository: IUserRepository = new UserRepository(new UserFactory());
     const userService: IUserRepository = new UserService(userRepository);
     Container.set('UserService', userService);
 

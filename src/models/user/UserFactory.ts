@@ -1,11 +1,11 @@
-import { UserModel } from './UserModel';
-import { IUserModelFactory } from './IUserModelFactory';
+import { User } from './User';
+import { IUserFactory } from './IUserFactory';
 import { v4 as uuidv4 } from 'uuid';
 import { Service } from 'typedi';
 
 @Service('UserModelFactory')
-export class UserModelFactory implements IUserModelFactory {
-    create(data: Partial<UserModel>): UserModel {
+export class UserFactory implements IUserFactory {
+    create(data: Partial<User>): User {
         if (!data.id) {
             data.id = uuidv4().toLocaleUpperCase();
         }
@@ -16,7 +16,7 @@ export class UserModelFactory implements IUserModelFactory {
             data.createdAt = new Date().toISOString();
         }
 
-        const model: UserModel = new UserModel();
+        const model: User = new User();
         Object.assign(model, data);
         return model;
     }

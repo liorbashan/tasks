@@ -1,6 +1,6 @@
 import { Container } from 'typedi';
 import { logger } from './../../utils/Logger';
-import { UserModel } from './../../models/user/UserModel';
+import { User } from '../../models/user/User';
 import { Context } from './../../models/Context';
 import { UserService } from './../../services/UserService';
 import { UserGql, AddUserInput, QueryUserInput, UpdateUserInput } from '../types/UserGql';
@@ -16,7 +16,7 @@ export class UserResolver {
 
     @Query((returns) => UserGql, { nullable: true })
     async GetUser(@Ctx() ctx: Context, @Arg('QueryUserInput', { nullable: true }) input: QueryUserInput): Promise<UserGql | null> {
-        const model: UserModel = await this.userService.get(input).catch((error) => {
+        const model: User = await this.userService.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -26,7 +26,7 @@ export class UserResolver {
     @Query((returns) => [UserGql], { nullable: true })
     async QueryUsers(@Ctx() ctx: Context, @Arg('QueryUserInput', { nullable: true }) input: QueryUserInput): Promise<UserGql[]> {
         const users: UserGql[] = [];
-        const models: UserModel[] = await this.userService.getAll(input).catch((error) => {
+        const models: User[] = await this.userService.getAll(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -40,7 +40,7 @@ export class UserResolver {
 
     @Mutation((returns) => UserGql, { nullable: true })
     async AddUser(@Ctx() ctx: Context, @Arg('AddUserInput') input: AddUserInput): Promise<UserGql | null> {
-        const userModel: UserModel = await this.userService.add(input).catch((error) => {
+        const userModel: User = await this.userService.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -49,7 +49,7 @@ export class UserResolver {
 
     @Mutation((returns) => UserGql, { nullable: true })
     async UpdateUser(@Ctx() ctx: Context, @Arg('UpdateUserInput') input: UpdateUserInput): Promise<UserGql | null> {
-        const userModel: UserModel = await this.userService.update(input).catch((error) => {
+        const userModel: User = await this.userService.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });

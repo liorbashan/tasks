@@ -1,3 +1,3 @@
-export * from './UserModel';
-export * from './UserModelFactory';
-export * from './IUserModelFactory';
+export * from './User';
+export * from './UserFactory';
+export * from './IUserFactory';
