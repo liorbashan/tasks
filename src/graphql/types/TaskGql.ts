@@ -1,7 +1,7 @@
 import { Task } from './../../models/task/Task';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
-ObjectType();
+@ObjectType()
 export class TaskGql {
     @Field()
     public id: string;
@@ -36,7 +36,7 @@ export class TaskGql {
     }
 }
 
-InputType();
+@InputType()
 export class TaskInput {
     @Field({ nullable: true })
     public id?: string;

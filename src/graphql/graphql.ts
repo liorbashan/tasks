@@ -1,7 +1,7 @@
 import { SpaceResolver } from './resolvers/SpaceResolver';
-// import { TaskResolver } from './resolvers/TaskResolver';
-// import { ShopItemResolver } from './resolvers/ShopItemResolver';
-// import { ShoppingListResolver } from './resolvers/ShoppingListResolver';
+import { TaskResolver } from './resolvers/TaskResolver';
+import { ShopItemResolver } from './resolvers/ShopItemResolver';
+import { ShoppingListResolver } from './resolvers/ShoppingListResolver';
 import { Context } from './../models/Context';
 import { UserResolver } from './resolvers/UserResolver';
 import { logger } from './../utils/Logger';
@@ -14,7 +14,7 @@ import { ApolloServer } from 'apollo-server-express';
 export async function graphQl(server: any): Promise<void> {
     const debugMode = process.env.GRAPHQL_DEBUG?.toLowerCase() === 'true' ? true : false;
     const schema = <GraphQLSchema>await buildSchema({
-        resolvers: [UserResolver, SpaceResolver],
+        resolvers: [UserResolver, SpaceResolver, ShoppingListResolver, ShopItemResolver, TaskResolver],
         // automatically create `schema.gql` file with schema definition in current folder
         emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
     }).catch((err) => {

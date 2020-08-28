@@ -1,7 +1,7 @@
 import { ShoppingList } from './../../models/shoppingList/ShoppingList';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
-ObjectType();
+@ObjectType()
 export class ShoppingListGql {
     @Field()
     public id: string;
@@ -23,7 +23,7 @@ export class ShoppingListGql {
     }
 }
 
-InputType();
+@InputType()
 export class ShoppingListInput {
     @Field({ nullable: true })
     public id?: string;

@@ -69,7 +69,7 @@ export class SpaceResolver {
         return space ? new SpaceGql(space) : null;
     }
 
-    @FieldResolver({ nullable: true })
+    @FieldResolver((type) => [ShoppingListGql], { nullable: true })
     async shoppingLists(@Root() space: SpaceGql): Promise<ShoppingListGql[]> {
         const shoppingLists: ShoppingListGql[] = [];
         const items: ShoppingList[] = await this.shoppingListService.getAll({ spaceId: space.get().id }).catch((error) => {
@@ -84,7 +84,7 @@ export class SpaceResolver {
         return shoppingLists;
     }
 
-    @FieldResolver({ nullable: true })
+    @FieldResolver((type) => [TaskGql], { nullable: true })
     async Tasks(@Root() space: SpaceGql): Promise<TaskGql[]> {
         const tasks: TaskGql[] = [];
         const items: Task[] = await this.taskService.getAll({ spaceId: space.get().id }).catch((error) => {

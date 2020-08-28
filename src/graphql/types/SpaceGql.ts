@@ -1,7 +1,7 @@
 import { Space } from '../../models/space/Space';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
-ObjectType();
+@ObjectType()
 export class SpaceGql {
     @Field()
     public id: string;
@@ -23,7 +23,7 @@ export class SpaceGql {
     }
 }
 
-InputType();
+@InputType()
 export class SpaceInput {
     @Field({ nullable: true })
     public id?: string;

@@ -63,7 +63,7 @@ export class ShoppingListResolver {
         return shoppingList ? new ShoppingListGql(shoppingList) : null;
     }
 
-    @FieldResolver({ nullable: true })
+    @FieldResolver((type) => [ShopItemGql], { nullable: true })
     async shopItems(@Root() shoppingList: ShoppingListGql): Promise<ShopItemGql[]> {
         const shopItems: ShopItemGql[] = [];
         const items: ShopItem[] = await this.shopItemService.getAll({ shoppingListId: shoppingList.id }).catch((error) => {
