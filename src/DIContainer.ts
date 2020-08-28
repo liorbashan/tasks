@@ -1,3 +1,11 @@
+import { ShopItemService } from './services/ShopItemService';
+import { ShopItemFactory } from './models/shopItem/ShopItemFactory';
+import { ShopItemRepository } from './repositories/postgres/ShopItemRepository';
+import { IShopItemRepository } from './interfaces/IShopItemRepository';
+import { TaskRepository } from './repositories/postgres/TaskRepository';
+import { TaskFactory } from './models/task/TaskFactory';
+import { TaskService } from './services/TaskService';
+import { ITaskRepository } from './interfaces/ITaskRepository';
 import { SpaceService } from './services/SpaceService';
 import { SpaceFactory } from './models/space/SpaceFactory';
 import { SpaceRepository } from './repositories/postgres/SpaceRepository';
@@ -9,7 +17,7 @@ import { UserRepository } from './repositories/postgres/UserRepository';
 import { IUserRepository } from './interfaces/IUserRepository';
 
 export async function init(): Promise<void> {
-    // User
+    // User:
     const userRepository: IUserRepository = new UserRepository(new UserFactory());
     const userService: IUserRepository = new UserService(userRepository);
     Container.set('UserService', userService);
@@ -18,4 +26,14 @@ export async function init(): Promise<void> {
     const spaceRepository: ISpaceRepository = new SpaceRepository(new SpaceFactory());
     const spaceService: ISpaceRepository = new SpaceService(spaceRepository);
     Container.set('SpaceService', spaceService);
+
+    // Task:
+    const taskRepository: ITaskRepository = new TaskRepository(new TaskFactory());
+    const taskService: ITaskRepository = new TaskService(taskRepository);
+    Container.set('TaskService', taskService);
+
+    // ShopItem:
+    const shopItemRepository: IShopItemRepository = new ShopItemRepository(new ShopItemFactory());
+    const shopItemService: IShopItemRepository = new ShopItemService(shopItemRepository);
+    Container.set('ShopItemService', shopItemService);
 }
