@@ -7,7 +7,7 @@ import { Service } from 'typedi';
 export class UserFactory implements IUserFactory {
     create(data: Partial<User>): User {
         if (!data.id) {
-            data.id = uuidv4().toLocaleUpperCase();
+            data.id = uuidv4().toLocaleLowerCase();
         }
         if (data.isActive === null || data.isActive === undefined) {
             data.isActive = true;

@@ -7,7 +7,7 @@ import { Space } from './Space';
 export class SpaceFactory implements ISpaceFactory {
     create(data: Partial<Space>): Space {
         if (!data.id) {
-            data.id = uuidv4().toLocaleUpperCase();
+            data.id = uuidv4().toLocaleLowerCase();
         }
 
         const model: Space = new Space();
