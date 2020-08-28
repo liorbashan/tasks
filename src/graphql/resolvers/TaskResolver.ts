@@ -16,17 +16,17 @@ export class TaskResolver {
 
     @Query((returns) => [TaskGql], { nullable: true })
     async QueryTasks(@Ctx() ctx: Context, @Arg('TaskInput', { nullable: true }) input: TaskInput): Promise<TaskGql[]> {
-        const users: TaskGql[] = [];
+        const tasks: TaskGql[] = [];
         const models: Task[] = await this.taskService.getAll(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
         if (models) {
             for (const item of models) {
-                users.push(new TaskGql(item));
+                tasks.push(new TaskGql(item));
             }
         }
-        return users;
+        return tasks;
     }
 
     @Query((returns) => TaskGql, { nullable: true })
