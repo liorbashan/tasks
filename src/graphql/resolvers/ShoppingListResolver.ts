@@ -1,16 +1,22 @@
+import { ShopItem } from './../../models/shopItem/ShopItem';
+import { IShopItemRepository } from './../../interfaces/IShopItemRepository';
 import { logger } from './../../utils/Logger';
 import { Context } from './../../models/Context';
 import { Container } from 'typedi';
 import { IShoppingListRepository } from './../../interfaces/IShoppingListRepository';
 import { ShoppingListGql, ShoppingListInput } from './../types/ShoppingListGql';
-import { Resolver, Query, Ctx, Arg, Mutation } from 'type-graphql';
+import { Resolver, Query, Ctx, Arg, Mutation, FieldResolver, Root } from 'type-graphql';
 import { ShoppingList } from '../../models/ShoppingList';
+import { ShopItemGql } from '../types/ShopItemGql';
 
 @Resolver((of) => ShoppingListGql)
 export class ShoppingListResolver {
-    constructor(private service: IShoppingListRepository) {
+    constructor(private service: IShoppingListRepository, private shopItemService: IShopItemRepository) {
         if (!service) {
             this.service = Container.get('ShoppingListService');
+        }
+        if (!shopItemService) {
+            this.shopItemService = Container.get('ShopItemService');
         }
     }
 
@@ -55,5 +61,20 @@ export class ShoppingListResolver {
             throw new Error(error);
         });
         return shoppingList ? new ShoppingListGql(shoppingList) : null;
+    }
+
+    @FieldResolver({ nullable: true })
+    async shopItems(@Root() shoppingList: ShoppingListGql): Promise<ShopItemGql[]> {
+        const shopItems: ShopItemGql[] = [];
+        const items: ShopItem[] = await this.shopItemService.getAll({ shoppingListId: shoppingList.id }).catch((error) => {
+            logger.error(error);
+            throw new Error(error);
+        });
+        if (items) {
+            for (const item of items) {
+                shopItems.push(new ShopItemGql(item));
+            }
+        }
+        return shopItems;
     }
 }
