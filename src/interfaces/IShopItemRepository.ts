@@ -1,9 +1,9 @@
-import { ShopItemInput } from '../graphql/types/ShopItemGql';
-import { ShopItem } from '../models/shopItem/ShopItem';
+import { ShopItemInput } from '../graphql/types/ShopItem';
+import { ShopItemEntity } from '../models/shopItem/ShopItemEntity';
 
 export interface IShopItemRepository {
-    get(input: Partial<ShopItemInput>): Promise<ShopItem>;
-    getAll(input: Partial<ShopItemInput>): Promise<ShopItem[]>;
-    add(input: Partial<ShopItemInput>): Promise<ShopItem>;
-    update(input: Partial<ShopItemInput>): Promise<ShopItem>;
+    get(input: Partial<ShopItemInput>): Promise<ShopItemEntity>;
+    getAll(input: Partial<ShopItemInput>): Promise<ShopItemEntity[]>;
+    add(input: Partial<ShopItemInput>): Promise<ShopItemEntity>;
+    update(input: Partial<ShopItemInput>): Promise<ShopItemEntity>;
 }

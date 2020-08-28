@@ -1,8 +1,8 @@
-import { TaskInput } from './../graphql/types/TaskGql';
-import { Task } from '../models/task';
+import { TaskInput } from '../graphql/types/Task';
+import { TaskEntity } from '../models/task';
 export interface ITaskRepository {
-    get(input: Partial<TaskInput>): Promise<Task>;
-    getAll(input?: Partial<TaskInput>): Promise<Task[]>;
-    add(input: Partial<TaskInput>): Promise<Task>;
-    update(input: Partial<TaskInput>): Promise<Task>;
+    get(input: Partial<TaskInput>): Promise<TaskEntity>;
+    getAll(input?: Partial<TaskInput>): Promise<TaskEntity[]>;
+    add(input: Partial<TaskInput>): Promise<TaskEntity>;
+    update(input: Partial<TaskInput>): Promise<TaskEntity>;
 }

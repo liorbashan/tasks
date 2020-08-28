@@ -1,16 +1,16 @@
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { logger } from './../../utils/Logger';
 import { Connection, getConnection } from 'typeorm';
-import { TaskInput } from './../../graphql/types/TaskGql';
-import { ITaskFactory } from './../../models/task/ITaskFactory';
+import { TaskInput } from '../../graphql/types/Task';
+import { ITaskEntityFactory } from '../../models/task/ITaskEntityFactory';
 import { ITaskRepository } from './../../interfaces/ITaskRepository';
-import { Task } from '../../models/task';
+import { TaskEntity } from '../../models/task';
 
 export class TaskRepository implements ITaskRepository {
-    constructor(private taskFactory: ITaskFactory, protected dbConnection?: Connection) {}
+    constructor(private taskFactory: ITaskEntityFactory, protected dbConnection?: Connection) {}
 
-    async get(input: Partial<TaskInput>): Promise<Task> {
-        let model: Task = new Task();
+    async get(input: Partial<TaskInput>): Promise<TaskEntity> {
+        let model: TaskEntity = new TaskEntity();
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -47,8 +47,8 @@ export class TaskRepository implements ITaskRepository {
         }
         return model;
     }
-    async getAll(input?: Partial<TaskInput> | undefined): Promise<Task[]> {
-        const models: Task[] = [];
+    async getAll(input?: Partial<TaskInput> | undefined): Promise<TaskEntity[]> {
+        const models: TaskEntity[] = [];
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -87,9 +87,9 @@ export class TaskRepository implements ITaskRepository {
         }
         return models;
     }
-    async add(input: Partial<TaskInput>): Promise<Task> {
-        let inserted: Task = new Task();
-        const taskModel: Task = this.taskFactory.create(input as Partial<Task>);
+    async add(input: Partial<TaskInput>): Promise<TaskEntity> {
+        let inserted: TaskEntity = new TaskEntity();
+        const taskModel: TaskEntity = this.taskFactory.create(input as Partial<TaskEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('tasks').values([taskModel]);
 
         const dbResult: any = await query.execute().catch((error) => {
@@ -102,8 +102,8 @@ export class TaskRepository implements ITaskRepository {
         }
         return inserted;
     }
-    async update(input: Partial<TaskInput>): Promise<Task> {
-        let model: Task = this.taskFactory.create(input as Partial<Task>);
+    async update(input: Partial<TaskInput>): Promise<TaskEntity> {
+        let model: TaskEntity = this.taskFactory.create(input as Partial<TaskEntity>);
         const query = this.getDbConnection()
             .createQueryBuilder()
             .update('tasks')

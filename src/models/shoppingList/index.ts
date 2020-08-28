@@ -1,3 +1,3 @@
-export * from './IShoppingListFactory';
-export * from './ShoppingListFactory';
-export * from './ShoppingList';
+export * from './IShoppingListEntityFactory';
+export * from './ShoppingListEntityFactory';
+export * from './ShoppingListEntity';

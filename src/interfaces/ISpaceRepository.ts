@@ -1,9 +1,9 @@
-import { SpaceInput } from '../graphql/types/SpaceGql';
-import { Space } from '../models/space';
+import { SpaceInput } from '../graphql/types/Space';
+import { SpaceEntity } from '../models/space';
 
 export interface ISpaceRepository {
-    get(input: SpaceInput): Promise<Space>;
-    getAll(input?: SpaceInput): Promise<Space[]>;
-    add(input: SpaceInput): Promise<Space>;
-    update(input: SpaceInput): Promise<Space>;
+    get(input: SpaceInput): Promise<SpaceEntity>;
+    getAll(input?: SpaceInput): Promise<SpaceEntity[]>;
+    add(input: SpaceInput): Promise<SpaceEntity>;
+    update(input: SpaceInput): Promise<SpaceEntity>;
 }

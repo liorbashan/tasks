@@ -1,11 +1,11 @@
-import { User } from '../../models/user/User';
+import { UserEntity } from '../../models/user/UserEntity';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
 @ObjectType()
-export class UserGql {
-    constructor(protected user: User) {}
+export class User {
+    constructor(protected user: UserEntity) {}
 
-    getModel(): User {
+    getModel(): UserEntity {
         return this.user;
     }
 

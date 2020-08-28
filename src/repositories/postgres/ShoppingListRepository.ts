@@ -1,16 +1,16 @@
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { logger } from './../../utils/Logger';
-import { ShoppingList } from './../../models/shoppingList/ShoppingList';
+import { ShoppingListEntity } from '../../models/shoppingList/ShoppingListEntity';
 import { Connection, getConnection } from 'typeorm';
-import { IShoppingListFactory } from './../../models/shoppingList/IShoppingListFactory';
+import { IShoppingListEntityFactory } from '../../models/shoppingList/IShoppingListEntityFactory';
 import { IShoppingListRepository } from './../../interfaces/IShoppingListRepository';
-import { ShoppingListInput } from '../../graphql/types/ShoppingListGql';
+import { ShoppingListInput } from '../../graphql/types/ShoppingList';
 
 export class ShoppingListRepository implements IShoppingListRepository {
-    constructor(protected factory: IShoppingListFactory, protected dbConnection?: Connection) {}
+    constructor(protected factory: IShoppingListEntityFactory, protected dbConnection?: Connection) {}
 
-    async get(input: ShoppingListInput): Promise<ShoppingList> {
-        let model: ShoppingList = new ShoppingList();
+    async get(input: ShoppingListInput): Promise<ShoppingListEntity> {
+        let model: ShoppingListEntity = new ShoppingListEntity();
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -40,8 +40,8 @@ export class ShoppingListRepository implements IShoppingListRepository {
         }
         return model;
     }
-    async getAll(input?: ShoppingListInput): Promise<ShoppingList[]> {
-        const models: ShoppingList[] = [];
+    async getAll(input?: ShoppingListInput): Promise<ShoppingListEntity[]> {
+        const models: ShoppingListEntity[] = [];
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -73,9 +73,9 @@ export class ShoppingListRepository implements IShoppingListRepository {
         }
         return models;
     }
-    async add(input: ShoppingListInput): Promise<ShoppingList> {
-        let inserted: ShoppingList = new ShoppingList();
-        const model: ShoppingList = this.factory.create(input as Partial<ShoppingList>);
+    async add(input: ShoppingListInput): Promise<ShoppingListEntity> {
+        let inserted: ShoppingListEntity = new ShoppingListEntity();
+        const model: ShoppingListEntity = this.factory.create(input as Partial<ShoppingListEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('shoppingLists').values([model]);
 
         const dbResult: any = await query.execute().catch((error) => {
@@ -88,8 +88,8 @@ export class ShoppingListRepository implements IShoppingListRepository {
         }
         return inserted;
     }
-    async update(input: ShoppingListInput): Promise<ShoppingList> {
-        let model: ShoppingList = this.factory.create(input as Partial<ShoppingList>);
+    async update(input: ShoppingListInput): Promise<ShoppingListEntity> {
+        let model: ShoppingListEntity = this.factory.create(input as Partial<ShoppingListEntity>);
         const query = this.getDbConnection()
             .createQueryBuilder()
             .update('shoppingLists')

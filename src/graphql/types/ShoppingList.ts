@@ -1,8 +1,8 @@
-import { ShoppingList } from './../../models/shoppingList/ShoppingList';
+import { ShoppingListEntity } from '../../models/shoppingList/ShoppingListEntity';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
 @ObjectType()
-export class ShoppingListGql {
+export class ShoppingList {
     @Field()
     public id: string;
     @Field()
@@ -11,14 +11,14 @@ export class ShoppingListGql {
     public description?: string;
     @Field()
     public spaceId: string;
-    constructor(protected shoppingList: ShoppingList) {
+    constructor(protected shoppingList: ShoppingListEntity) {
         this.id = shoppingList.id;
         this.title = shoppingList.title;
         this.description = shoppingList.description;
         this.spaceId = shoppingList.spaceId;
     }
 
-    get(): ShoppingList {
+    get(): ShoppingListEntity {
         return this;
     }
 }

@@ -1,3 +1,3 @@
-export * from './User';
-export * from './UserFactory';
-export * from './IUserFactory';
+export * from './UserEntity';
+export * from './UserEntityFactory';
+export * from './IUserEntityFactory';

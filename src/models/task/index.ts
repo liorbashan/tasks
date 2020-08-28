@@ -1,3 +1,3 @@
-export * from './Task';
-export * from './TaskFactory';
-export * from './ITaskFactory';
+export * from './TaskEntity';
+export * from './TaskEntityFactory';
+export * from './ITaskEntityFactory';

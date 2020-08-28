@@ -1,4 +1,4 @@
-export class ShoppingList {
+export class ShoppingListEntity {
     id: string;
     title: string;
     description?: string;

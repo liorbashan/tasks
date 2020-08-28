@@ -1,9 +1,9 @@
-import { ShoppingList } from './../models/shoppingList/ShoppingList';
-import { ShoppingListInput } from './../graphql/types/ShoppingListGql';
+import { ShoppingListEntity } from '../models/shoppingList/ShoppingListEntity';
+import { ShoppingListInput } from '../graphql/types/ShoppingList';
 
 export interface IShoppingListRepository {
-    get(input: ShoppingListInput): Promise<ShoppingList>;
-    getAll(input?: ShoppingListInput): Promise<ShoppingList[]>;
-    add(input: ShoppingListInput): Promise<ShoppingList>;
-    update(input: ShoppingListInput): Promise<ShoppingList>;
+    get(input: ShoppingListInput): Promise<ShoppingListEntity>;
+    getAll(input?: ShoppingListInput): Promise<ShoppingListEntity[]>;
+    add(input: ShoppingListInput): Promise<ShoppingListEntity>;
+    update(input: ShoppingListInput): Promise<ShoppingListEntity>;
 }

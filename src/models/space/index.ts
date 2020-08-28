@@ -1,3 +1,3 @@
-export * from './ISpaceFactory';
-export * from './SpaceFactory';
-export * from './Space';
+export * from './ISpaceEntityFactory';
+export * from './SpaceEntityFactory';
+export * from './SpaceEntity';

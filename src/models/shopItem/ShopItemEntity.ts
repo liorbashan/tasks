@@ -1,4 +1,4 @@
-export class ShopItem {
+export class ShopItemEntity {
     id: string;
     title: string;
     active: boolean;

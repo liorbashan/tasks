@@ -1,22 +1,22 @@
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { logger } from './../../utils/Logger';
 import { Connection, getConnection } from 'typeorm';
-import { Space } from '../../models/space/Space';
-import { ISpaceFactory } from '../../models/space/ISpaceFactory';
+import { SpaceEntity } from '../../models/space/SpaceEntity';
+import { ISpaceEntityFactory } from '../../models/space/ISpaceEntityFactory';
 import { ISpaceRepository } from '../../interfaces/ISpaceRepository';
-import { SpaceInput } from '../../graphql/types/SpaceGql';
+import { SpaceInput } from '../../graphql/types/Space';
 
 export class SpaceRepository implements ISpaceRepository {
-    constructor(private spaceFactory: ISpaceFactory, protected dbConnection?: Connection) {}
+    constructor(private spaceFactory: ISpaceEntityFactory, protected dbConnection?: Connection) {}
 
-    async get(input: SpaceInput): Promise<Space> {
-        let model: Space = new Space();
+    async get(input: SpaceInput): Promise<SpaceEntity> {
+        let model: SpaceEntity = new SpaceEntity();
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
             .addSelect(`"title"`, 'title')
             .addSelect(`"description"`, 'description')
-            .addSelect(`"imgageUrl"`, 'imgageUrl')
+            .addSelect(`"imageUrl"`, 'imageUrl')
             .from('spaces', 'spaces')
             .where('1=1');
 
@@ -43,14 +43,14 @@ export class SpaceRepository implements ISpaceRepository {
         }
         return model;
     }
-    async getAll(input?: SpaceInput): Promise<Space[]> {
-        const models: Space[] = [];
+    async getAll(input?: SpaceInput): Promise<SpaceEntity[]> {
+        const models: SpaceEntity[] = [];
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
             .addSelect(`"title"`, 'title')
             .addSelect(`"description"`, 'description')
-            .addSelect(`"imgageUrl"`, 'imgageUrl')
+            .addSelect(`"imageUrl"`, 'imageUrl')
             .from('spaces', 'spaces')
             .where('1=1');
 
@@ -79,9 +79,9 @@ export class SpaceRepository implements ISpaceRepository {
         }
         return models;
     }
-    async add(input: SpaceInput): Promise<Space> {
-        let inserted: Space = new Space();
-        const spaceModel: Space = this.spaceFactory.create(input as Partial<Space>);
+    async add(input: SpaceInput): Promise<SpaceEntity> {
+        let inserted: SpaceEntity = new SpaceEntity();
+        const spaceModel: SpaceEntity = this.spaceFactory.create(input as Partial<SpaceEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('spaces').values([spaceModel]);
 
         const dbResult: any = await query.execute().catch((error) => {
@@ -94,8 +94,8 @@ export class SpaceRepository implements ISpaceRepository {
         }
         return inserted;
     }
-    async update(input: SpaceInput): Promise<Space> {
-        let model: Space = this.spaceFactory.create(input as Partial<Space>);
+    async update(input: SpaceInput): Promise<SpaceEntity> {
+        let model: SpaceEntity = this.spaceFactory.create(input as Partial<SpaceEntity>);
         const query = this.getDbConnection()
             .createQueryBuilder()
             .update('spaces')

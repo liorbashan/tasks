@@ -1,16 +1,16 @@
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { logger } from './../../utils/Logger';
 import { Connection, getConnection } from 'typeorm';
-import { ShopItem } from './../../models/shopItem/ShopItem';
-import { IShopItemFactory } from './../../models/shopItem/IShopItemFactory';
+import { ShopItemEntity } from '../../models/shopItem/ShopItemEntity';
+import { IShopItemEntityFactory } from '../../models/shopItem/IShopItemEntityFactory';
 import { IShopItemRepository } from './../../interfaces/IShopItemRepository';
-import { ShopItemInput } from '../../graphql/types/ShopItemGql';
+import { ShopItemInput } from '../../graphql/types/ShopItem';
 
 export class ShopItemRepository implements IShopItemRepository {
-    constructor(protected shopItemFactory: IShopItemFactory, protected dbConnection?: Connection) {}
+    constructor(protected shopItemFactory: IShopItemEntityFactory, protected dbConnection?: Connection) {}
 
-    async get(input: Partial<ShopItemInput>): Promise<ShopItem> {
-        let model: ShopItem = new ShopItem();
+    async get(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
+        let model: ShopItemEntity = new ShopItemEntity();
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -18,7 +18,7 @@ export class ShopItemRepository implements IShopItemRepository {
             .addSelect(`"active"`, 'active')
             .addSelect(`"imageUrl"`, 'imageUrl')
             .addSelect(`"shoppingListId"`, 'shoppingListId')
-            .from('shoppingItems', 'shoppingItems')
+            .from(`shoppingItems`, 'shoppingItems')
             .where('1=1');
 
         if (input?.id) {
@@ -44,8 +44,8 @@ export class ShopItemRepository implements IShopItemRepository {
         }
         return model;
     }
-    async getAll(input: Partial<ShopItemInput>): Promise<ShopItem[]> {
-        const models: ShopItem[] = [];
+    async getAll(input: Partial<ShopItemInput>): Promise<ShopItemEntity[]> {
+        const models: ShopItemEntity[] = [];
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -81,9 +81,9 @@ export class ShopItemRepository implements IShopItemRepository {
         }
         return models;
     }
-    async add(input: Partial<ShopItemInput>): Promise<ShopItem> {
-        let inserted: ShopItem = new ShopItem();
-        const model: ShopItem = this.shopItemFactory.create(input as Partial<ShopItem>);
+    async add(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
+        let inserted: ShopItemEntity = new ShopItemEntity();
+        const model: ShopItemEntity = this.shopItemFactory.create(input as Partial<ShopItemEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('shoppingItems').values([model]);
 
         const dbResult: any = await query.execute().catch((error) => {
@@ -96,8 +96,8 @@ export class ShopItemRepository implements IShopItemRepository {
         }
         return inserted;
     }
-    async update(input: Partial<ShopItemInput>): Promise<ShopItem> {
-        let model: ShopItem = this.shopItemFactory.create(input as Partial<ShopItem>);
+    async update(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
+        let model: ShopItemEntity = this.shopItemFactory.create(input as Partial<ShopItemEntity>);
         const query = this.getDbConnection()
             .createQueryBuilder()
             .update('shoppingItems')

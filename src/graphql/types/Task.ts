@@ -1,8 +1,8 @@
-import { Task } from './../../models/task/Task';
+import { TaskEntity } from '../../models/task/TaskEntity';
 import { ObjectType, Field, InputType } from 'type-graphql';
 
 @ObjectType()
-export class TaskGql {
+export class Task {
     @Field()
     public id: string;
     @Field()
@@ -20,7 +20,7 @@ export class TaskGql {
     @Field()
     public userId: string;
 
-    constructor(protected task: Task) {
+    constructor(protected task: TaskEntity) {
         this.id = task.id;
         this.title = task.title;
         this.description = task.description;
@@ -31,7 +31,7 @@ export class TaskGql {
         this.userId = task.userId;
     }
 
-    get(): Task {
+    get(): TaskEntity {
         return this;
     }
 }

@@ -18,14 +18,14 @@ CREATE TABLE spaces (
     "imageUrl" VARCHAR NULL
 )
 
-CREATE TABLE shoppingLists (
+CREATE TABLE "shoppingLists" (
     "id" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     "title" VARCHAR NOT NULL UNIQUE,
     "description" VARCHAR NULL,
     "spaceId" uuid NOT NULL REFERENCES spaces
 )
 
-CREATE TABLE shoppingItems (
+CREATE TABLE "shoppingItems" (
     "id" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     "title" VARCHAR NOT NULL UNIQUE,
     "active" BOOLEAN NOT NULL DEFAULT false,

@@ -1,7 +1,7 @@
-import { QueryUserInput, UpdateUserInput, AddUserInput } from '../../graphql/types/UserGql';
+import { QueryUserInput, UpdateUserInput, AddUserInput } from '../../graphql/types/User';
 import { logger } from './../../utils/Logger';
-import { UserFactory } from '../../models/user/UserFactory';
-import { User } from '../../models/user/User';
+import { UserEntityFactory } from '../../models/user/UserEntityFactory';
+import { UserEntity } from '../../models/user/UserEntity';
 import { IUserRepository } from './../../interfaces/IUserRepository';
 import { Service } from 'typedi';
 import { Connection, getConnection } from 'typeorm';
@@ -9,11 +9,11 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 
 @Service('UserRepository')
 export class UserRepository implements IUserRepository {
-    constructor(private userModelFactory: UserFactory, protected dbConnection?: Connection) {}
+    constructor(private userModelFactory: UserEntityFactory, protected dbConnection?: Connection) {}
 
-    async add(data: Partial<AddUserInput>): Promise<User> {
-        let inserted: User = new User();
-        const user: User = this.userModelFactory.create(data as Partial<User>);
+    async add(data: Partial<AddUserInput>): Promise<UserEntity> {
+        let inserted: UserEntity = new UserEntity();
+        const user: UserEntity = this.userModelFactory.create(data as Partial<UserEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('users').values([user]);
 
         const dbResult: any = await query.execute().catch((error) => {
@@ -26,8 +26,8 @@ export class UserRepository implements IUserRepository {
         }
         return inserted;
     }
-    async update(data: Partial<UpdateUserInput>): Promise<User> {
-        let model: User = this.userModelFactory.create(data as Partial<User>);
+    async update(data: Partial<UpdateUserInput>): Promise<UserEntity> {
+        let model: UserEntity = this.userModelFactory.create(data as Partial<UserEntity>);
         const query = this.getDbConnection()
             .createQueryBuilder()
             .update('users')
@@ -42,8 +42,8 @@ export class UserRepository implements IUserRepository {
         }
         return model;
     }
-    async get(data: Partial<User>): Promise<User> {
-        let model: User = new User();
+    async get(data: Partial<UserEntity>): Promise<UserEntity> {
+        let model: UserEntity = new UserEntity();
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -74,8 +74,8 @@ export class UserRepository implements IUserRepository {
         }
         return model;
     }
-    async getAll(data?: Partial<QueryUserInput>): Promise<User[]> {
-        const models: User[] = [];
+    async getAll(data?: Partial<QueryUserInput>): Promise<UserEntity[]> {
+        const models: UserEntity[] = [];
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')

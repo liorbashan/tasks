@@ -1,18 +1,18 @@
-import { Task } from './../../models/task/Task';
-import { TaskGql } from './../types/TaskGql';
-import { ShoppingList } from './../../models/shoppingList/ShoppingList';
-import { ShoppingListGql } from './../types/ShoppingListGql';
+import { TaskEntity } from '../../models/task/TaskEntity';
+import { Task } from '../types/Task';
+import { ShoppingListEntity } from '../../models/shoppingList/ShoppingListEntity';
+import { ShoppingList } from '../types/ShoppingList';
 import { ITaskRepository } from './../../interfaces/ITaskRepository';
 import { logger } from './../../utils/Logger';
 import { Context } from './../../models/Context';
 import { Container } from 'typedi';
 import { ISpaceRepository } from './../../interfaces/ISpaceRepository';
-import { SpaceGql, SpaceInput } from './../types/SpaceGql';
+import { Space, SpaceInput } from '../types/Space';
 import { Resolver, Query, Ctx, Arg, Mutation, FieldResolver, Root } from 'type-graphql';
-import { Space } from '../../models/Space';
+import { SpaceEntity } from '../../models/Space';
 import { IShoppingListRepository } from '../../interfaces/IShoppingListRepository';
 
-@Resolver((of) => SpaceGql)
+@Resolver((of) => Space)
 export class SpaceResolver {
     constructor(private service: ISpaceRepository, private taskService: ITaskRepository, private shoppingListService: IShoppingListRepository) {
         if (!service) {
@@ -26,74 +26,74 @@ export class SpaceResolver {
         }
     }
 
-    @Query((returns) => [SpaceGql], { nullable: true })
-    async QuerySpaces(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput, { nullable: true }) input: SpaceInput): Promise<SpaceGql[]> {
-        const spaces: SpaceGql[] = [];
-        const models: Space[] = await this.service.getAll(input).catch((error) => {
+    @Query((returns) => [Space], { nullable: true })
+    async QuerySpaces(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput, { nullable: true }) input: SpaceInput): Promise<Space[]> {
+        const spaces: Space[] = [];
+        const models: SpaceEntity[] = await this.service.getAll(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
         if (models) {
             for (const item of models) {
-                spaces.push(new SpaceGql(item));
+                spaces.push(new Space(item));
             }
         }
         return spaces;
     }
 
-    @Query((returns) => SpaceGql, { nullable: true })
-    async GetSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<SpaceGql | null> {
-        const space: Space = await this.service.get(input).catch((error) => {
+    @Query((returns) => Space, { nullable: true })
+    async GetSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<Space | null> {
+        const space: SpaceEntity = await this.service.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
 
-        return space ? new SpaceGql(space) : null;
+        return space ? new Space(space) : null;
     }
 
-    @Mutation((returns) => SpaceGql, { nullable: true })
-    async AddSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<SpaceGql | null> {
-        const space: Space = await this.service.add(input).catch((error) => {
+    @Mutation((returns) => Space, { nullable: true })
+    async AddSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<Space | null> {
+        const space: SpaceEntity = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
-        return space ? new SpaceGql(space) : null;
+        return space ? new Space(space) : null;
     }
 
-    @Mutation((returns) => SpaceGql, { nullable: true })
-    async UpdateSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<SpaceGql | null> {
-        const space: Space = await this.service.add(input).catch((error) => {
+    @Mutation((returns) => Space, { nullable: true })
+    async UpdateSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<Space | null> {
+        const space: SpaceEntity = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
-        return space ? new SpaceGql(space) : null;
+        return space ? new Space(space) : null;
     }
 
-    @FieldResolver((type) => [ShoppingListGql], { nullable: true })
-    async shoppingLists(@Root() space: SpaceGql): Promise<ShoppingListGql[]> {
-        const shoppingLists: ShoppingListGql[] = [];
-        const items: ShoppingList[] = await this.shoppingListService.getAll({ spaceId: space.get().id }).catch((error) => {
+    @FieldResolver((type) => [ShoppingList], { nullable: true })
+    async shoppingLists(@Root() space: Space): Promise<ShoppingList[]> {
+        const shoppingLists: ShoppingList[] = [];
+        const items: ShoppingListEntity[] = await this.shoppingListService.getAll({ spaceId: space.get().id }).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
         if (items) {
             for (const item of items) {
-                shoppingLists.push(new ShoppingListGql(item));
+                shoppingLists.push(new ShoppingList(item));
             }
         }
         return shoppingLists;
     }
 
-    @FieldResolver((type) => [TaskGql], { nullable: true })
-    async Tasks(@Root() space: SpaceGql): Promise<TaskGql[]> {
-        const tasks: TaskGql[] = [];
-        const items: Task[] = await this.taskService.getAll({ spaceId: space.get().id }).catch((error) => {
+    @FieldResolver((type) => [Task], { nullable: true })
+    async Tasks(@Root() space: Space): Promise<Task[]> {
+        const tasks: Task[] = [];
+        const items: TaskEntity[] = await this.taskService.getAll({ spaceId: space.get().id }).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
         if (items) {
             for (const item of items) {
-                tasks.push(new TaskGql(item));
+                tasks.push(new Task(item));
             }
         }
         return tasks;

@@ -1,3 +1,3 @@
-export * from './IShopItemFactory';
-export * from './ShopItemFactory';
-export * from './ShopItem';
+export * from './IShopItemEntityFactory';
+export * from './ShopItemEntityFactory';
+export * from './ShopItemEntity';
