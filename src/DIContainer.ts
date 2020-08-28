@@ -1,3 +1,7 @@
+import { ShoppingListService } from './services/ShoppingListService';
+import { ShoppingListFactory } from './models/shoppingList/ShoppingListFactory';
+import { ShoppingListRepository } from './repositories/postgres/ShoppingListRepository';
+import { IShoppingListRepository } from './interfaces/IShoppingListRepository';
 import { ShopItemService } from './services/ShopItemService';
 import { ShopItemFactory } from './models/shopItem/ShopItemFactory';
 import { ShopItemRepository } from './repositories/postgres/ShopItemRepository';
@@ -36,4 +40,9 @@ export async function init(): Promise<void> {
     const shopItemRepository: IShopItemRepository = new ShopItemRepository(new ShopItemFactory());
     const shopItemService: IShopItemRepository = new ShopItemService(shopItemRepository);
     Container.set('ShopItemService', shopItemService);
+
+    // ShoppingList:
+    const shoppingListRepository: IShoppingListRepository = new ShoppingListRepository(new ShoppingListFactory());
+    const shoppingListService: IShoppingListRepository = new ShoppingListService(shoppingListRepository);
+    Container.set('ShoppingListService', shoppingListService);
 }

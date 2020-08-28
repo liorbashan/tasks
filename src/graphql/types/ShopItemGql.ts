@@ -30,13 +30,13 @@ export class ShopItemGql {
 InputType();
 export class ShopItemInput {
     @Field({ nullable: true })
-    public id: string;
+    public id?: string;
     @Field({ nullable: true })
-    public title: string;
+    public title?: string;
     @Field({ nullable: true })
-    public active: boolean;
+    public active?: boolean;
     @Field({ nullable: true })
     public imageUrl?: string;
     @Field({ nullable: true })
-    public shoppingListId: string;
+    public shoppingListId?: string;
 }
