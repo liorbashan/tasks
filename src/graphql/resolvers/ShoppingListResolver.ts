@@ -21,7 +21,7 @@ export class ShoppingListResolver {
     }
 
     @Query((returns) => [ShoppingListGql], { nullable: true })
-    async QueryShoppingLists(@Ctx() ctx: Context, @Arg('ShoppingListInput', { nullable: true }) input: ShoppingListInput): Promise<ShoppingListGql[]> {
+    async QueryShoppingLists(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput, { nullable: true }) input: ShoppingListInput): Promise<ShoppingListGql[]> {
         const lists: ShoppingListGql[] = [];
         const models: ShoppingList[] = await this.service.getAll(input).catch((error) => {
             logger.error(error);
@@ -36,7 +36,7 @@ export class ShoppingListResolver {
     }
 
     @Query((returns) => ShoppingListGql, { nullable: true })
-    async GetShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput') input: ShoppingListInput): Promise<ShoppingListGql | null> {
+    async GetShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput) input: ShoppingListInput): Promise<ShoppingListGql | null> {
         const shoppingList: ShoppingList = await this.service.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -46,7 +46,7 @@ export class ShoppingListResolver {
     }
 
     @Mutation((returns) => ShoppingListGql, { nullable: true })
-    async AddShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput') input: ShoppingListInput): Promise<ShoppingListGql | null> {
+    async AddShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput) input: ShoppingListInput): Promise<ShoppingListGql | null> {
         const shoppingList: ShoppingList = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -55,7 +55,7 @@ export class ShoppingListResolver {
     }
 
     @Mutation((returns) => ShoppingListGql, { nullable: true })
-    async UpdateShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput') input: ShoppingListInput): Promise<ShoppingListGql | null> {
+    async UpdateShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput) input: ShoppingListInput): Promise<ShoppingListGql | null> {
         const shoppingList: ShoppingList = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);

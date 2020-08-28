@@ -15,7 +15,7 @@ export class ShopItemResolver {
     }
 
     @Query((returns) => [ShopItemGql], { nullable: true })
-    async QueryShopItems(@Ctx() ctx: Context, @Arg('ShopItemInput', { nullable: true }) input: ShopItemInput): Promise<ShopItemGql[]> {
+    async QueryShopItems(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput, { nullable: true }) input: ShopItemInput): Promise<ShopItemGql[]> {
         const shopItems: ShopItemGql[] = [];
         const models: ShopItem[] = await this.service.getAll(input).catch((error) => {
             logger.error(error);
@@ -30,7 +30,7 @@ export class ShopItemResolver {
     }
 
     @Query((returns) => ShopItemGql, { nullable: true })
-    async GetShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput') input: ShopItemInput): Promise<ShopItemGql | null> {
+    async GetShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput) input: ShopItemInput): Promise<ShopItemGql | null> {
         const shopItem: ShopItem = await this.service.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -40,7 +40,7 @@ export class ShopItemResolver {
     }
 
     @Mutation((returns) => ShopItemGql, { nullable: true })
-    async AddShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput') input: ShopItemInput): Promise<ShopItemGql | null> {
+    async AddShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput) input: ShopItemInput): Promise<ShopItemGql | null> {
         const shopItem: ShopItem = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -49,7 +49,7 @@ export class ShopItemResolver {
     }
 
     @Mutation((returns) => ShopItemGql, { nullable: true })
-    async UpdateShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput') input: ShopItemInput): Promise<ShopItemGql | null> {
+    async UpdateShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput) input: ShopItemInput): Promise<ShopItemGql | null> {
         const shopItem: ShopItem = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);

@@ -27,7 +27,7 @@ export class SpaceResolver {
     }
 
     @Query((returns) => [SpaceGql], { nullable: true })
-    async QuerySpaces(@Ctx() ctx: Context, @Arg('SpaceInput', { nullable: true }) input: SpaceInput): Promise<SpaceGql[]> {
+    async QuerySpaces(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput, { nullable: true }) input: SpaceInput): Promise<SpaceGql[]> {
         const spaces: SpaceGql[] = [];
         const models: Space[] = await this.service.getAll(input).catch((error) => {
             logger.error(error);
@@ -42,7 +42,7 @@ export class SpaceResolver {
     }
 
     @Query((returns) => SpaceGql, { nullable: true })
-    async GetSpace(@Ctx() ctx: Context, @Arg('SpaceInput') input: SpaceInput): Promise<SpaceGql | null> {
+    async GetSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<SpaceGql | null> {
         const space: Space = await this.service.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -52,7 +52,7 @@ export class SpaceResolver {
     }
 
     @Mutation((returns) => SpaceGql, { nullable: true })
-    async AddSpace(@Ctx() ctx: Context, @Arg('SpaceInput') input: SpaceInput): Promise<SpaceGql | null> {
+    async AddSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<SpaceGql | null> {
         const space: Space = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -61,7 +61,7 @@ export class SpaceResolver {
     }
 
     @Mutation((returns) => SpaceGql, { nullable: true })
-    async UpdateSpace(@Ctx() ctx: Context, @Arg('SpaceInput') input: SpaceInput): Promise<SpaceGql | null> {
+    async UpdateSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<SpaceGql | null> {
         const space: Space = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -72,7 +72,7 @@ export class SpaceResolver {
     @FieldResolver({ nullable: true })
     async shoppingLists(@Root() space: SpaceGql): Promise<ShoppingListGql[]> {
         const shoppingLists: ShoppingListGql[] = [];
-        const items: ShoppingList[] = await this.shoppingListService.getAll({ spaceId: space.id }).catch((error) => {
+        const items: ShoppingList[] = await this.shoppingListService.getAll({ spaceId: space.get().id }).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -87,7 +87,7 @@ export class SpaceResolver {
     @FieldResolver({ nullable: true })
     async Tasks(@Root() space: SpaceGql): Promise<TaskGql[]> {
         const tasks: TaskGql[] = [];
-        const items: Task[] = await this.taskService.getAll({ spaceId: space.id }).catch((error) => {
+        const items: Task[] = await this.taskService.getAll({ spaceId: space.get().id }).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });

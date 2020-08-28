@@ -11,5 +11,5 @@ import * as containers from './DIContainer';
     await database.init();
     logger.info('Application running!');
 })().catch((error) => {
-    logger.error(error);
+    logger.error(error.message);
 });

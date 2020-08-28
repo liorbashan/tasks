@@ -15,7 +15,7 @@ export class TaskResolver {
     }
 
     @Query((returns) => [TaskGql], { nullable: true })
-    async QueryTasks(@Ctx() ctx: Context, @Arg('TaskInput', { nullable: true }) input: TaskInput): Promise<TaskGql[]> {
+    async QueryTasks(@Ctx() ctx: Context, @Arg('TaskInput', (type) => TaskInput, { nullable: true }) input: TaskInput): Promise<TaskGql[]> {
         const tasks: TaskGql[] = [];
         const models: Task[] = await this.taskService.getAll(input).catch((error) => {
             logger.error(error);
@@ -30,7 +30,7 @@ export class TaskResolver {
     }
 
     @Query((returns) => TaskGql, { nullable: true })
-    async GetTask(@Ctx() ctx: Context, @Arg('TaskInput') input: TaskInput): Promise<TaskGql | null> {
+    async GetTask(@Ctx() ctx: Context, @Arg('TaskInput', (type) => TaskInput) input: TaskInput): Promise<TaskGql | null> {
         const task: Task = await this.taskService.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -40,7 +40,7 @@ export class TaskResolver {
     }
 
     @Mutation((returns) => TaskGql, { nullable: true })
-    async AddTask(@Ctx() ctx: Context, @Arg('TaskInput') input: TaskInput): Promise<TaskGql | null> {
+    async AddTask(@Ctx() ctx: Context, @Arg('TaskInput', (type) => TaskInput) input: TaskInput): Promise<TaskGql | null> {
         const task: Task = await this.taskService.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -49,7 +49,7 @@ export class TaskResolver {
     }
 
     @Mutation((returns) => TaskGql, { nullable: true })
-    async UpdateTask(@Ctx() ctx: Context, @Arg('TaskInput') input: TaskInput): Promise<TaskGql | null> {
+    async UpdateTask(@Ctx() ctx: Context, @Arg('TaskInput', (type) => TaskInput) input: TaskInput): Promise<TaskGql | null> {
         const task: Task = await this.taskService.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
