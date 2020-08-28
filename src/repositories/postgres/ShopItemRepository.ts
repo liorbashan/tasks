@@ -84,7 +84,7 @@ export class ShopItemRepository implements IShopItemRepository {
     async add(input: Partial<ShopItemInput>): Promise<ShopItem> {
         let inserted: ShopItem = new ShopItem();
         const model: ShopItem = this.shopItemFactory.create(input as Partial<ShopItem>);
-        const query = this.getDbConnection().createQueryBuilder().insert().into('spaces').values([model]);
+        const query = this.getDbConnection().createQueryBuilder().insert().into('shoppingItems').values([model]);
 
         const dbResult: any = await query.execute().catch((error) => {
             logger.error(error);
@@ -100,7 +100,7 @@ export class ShopItemRepository implements IShopItemRepository {
         let model: ShopItem = this.shopItemFactory.create(input as Partial<ShopItem>);
         const query = this.getDbConnection()
             .createQueryBuilder()
-            .update('spaces')
+            .update('shoppingItems')
             .set(input as QueryDeepPartialEntity<ShopItemInput>)
             .where(`"id"=:id`, { id: input.id });
         const dbResult: any = await query.execute().catch((error) => {

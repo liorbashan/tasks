@@ -90,7 +90,7 @@ export class TaskRepository implements ITaskRepository {
     async add(input: Partial<TaskInput>): Promise<Task> {
         let inserted: Task = new Task();
         const taskModel: Task = this.taskFactory.create(input as Partial<Task>);
-        const query = this.getDbConnection().createQueryBuilder().insert().into('spaces').values([taskModel]);
+        const query = this.getDbConnection().createQueryBuilder().insert().into('tasks').values([taskModel]);
 
         const dbResult: any = await query.execute().catch((error) => {
             logger.error(error);
@@ -106,7 +106,7 @@ export class TaskRepository implements ITaskRepository {
         let model: Task = this.taskFactory.create(input as Partial<Task>);
         const query = this.getDbConnection()
             .createQueryBuilder()
-            .update('spaces')
+            .update('tasks')
             .set(input as QueryDeepPartialEntity<TaskInput>)
             .where(`"id"=:id`, { id: input.id });
         const dbResult: any = await query.execute().catch((error) => {
