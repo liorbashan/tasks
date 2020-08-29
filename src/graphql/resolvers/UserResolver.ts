@@ -16,7 +16,7 @@ export class UserResolver {
 
     @Query((returns) => User, { nullable: true })
     async GetUser(@Ctx() ctx: Context, @Arg('QueryUserInput', { nullable: true }) input: QueryUserInput): Promise<User | null> {
-        const model: UserEntity = await this.userService.get(input).catch((error) => {
+        const model: UserEntity | null = await this.userService.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -40,7 +40,7 @@ export class UserResolver {
 
     @Mutation((returns) => User, { nullable: true })
     async AddUser(@Ctx() ctx: Context, @Arg('AddUserInput') input: AddUserInput): Promise<User | null> {
-        const userModel: UserEntity = await this.userService.add(input).catch((error) => {
+        const userModel: UserEntity | null = await this.userService.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -49,7 +49,7 @@ export class UserResolver {
 
     @Mutation((returns) => User, { nullable: true })
     async UpdateUser(@Ctx() ctx: Context, @Arg('UpdateUserInput') input: UpdateUserInput): Promise<User | null> {
-        const userModel: UserEntity = await this.userService.update(input).catch((error) => {
+        const userModel: UserEntity | null = await this.userService.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
