@@ -27,20 +27,26 @@ export class UserRepository implements IUserRepository {
         return inserted;
     }
     async update(data: Partial<UpdateUserInput>): Promise<UserEntity> {
-        let model: UserEntity = this.userModelFactory.create(data as Partial<UserEntity>);
-        const query = this.getDbConnection()
-            .createQueryBuilder()
-            .update('users')
-            .set(data as QueryDeepPartialEntity<UpdateUserInput>)
-            .where(`"id"=:id`, { id: data.id });
-        const dbResult: any = await query.execute().catch((error) => {
-            logger.error(error);
-            throw new Error(error);
-        });
-        if (dbResult) {
-            model = await this.get({ id: data.id });
+        let model: UserEntity = new UserEntity();
+        try {
+            const id: string = data.id!;
+            delete data.id;
+            const query = this.getDbConnection()
+                .createQueryBuilder()
+                .update('users')
+                .set(data as QueryDeepPartialEntity<UpdateUserInput>)
+                .where(`"id"=:id`, { id });
+            const dbResult: any = await query.execute().catch((error) => {
+                logger.error(error);
+                throw new Error(error);
+            });
+            if (dbResult) {
+                model = await this.get({ id });
+            }
+            return model;
+        } catch (error) {
+            throw new Error(`Are you missing property 'id' from the updated object?`);
         }
-        return model;
     }
     async get(data: Partial<UserEntity>): Promise<UserEntity> {
         let model: UserEntity = new UserEntity();

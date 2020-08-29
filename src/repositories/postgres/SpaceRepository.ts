@@ -95,20 +95,26 @@ export class SpaceRepository implements ISpaceRepository {
         return inserted;
     }
     async update(input: SpaceInput): Promise<SpaceEntity> {
-        let model: SpaceEntity = this.spaceFactory.create(input as Partial<SpaceEntity>);
-        const query = this.getDbConnection()
-            .createQueryBuilder()
-            .update('spaces')
-            .set(input as QueryDeepPartialEntity<SpaceInput>)
-            .where(`"id"=:id`, { id: input.id });
-        const dbResult: any = await query.execute().catch((error) => {
-            logger.error(error);
-            throw new Error(error);
-        });
-        if (dbResult) {
-            model = await this.get({ id: input.id });
+        let model: SpaceEntity = new SpaceEntity();
+        try {
+            const id: string = input.id!;
+            delete input.id;
+            const query = this.getDbConnection()
+                .createQueryBuilder()
+                .update('spaces')
+                .set(input as QueryDeepPartialEntity<SpaceInput>)
+                .where(`"id"=:id`, { id });
+            const dbResult: any = await query.execute().catch((error) => {
+                logger.error(error);
+                throw new Error(error);
+            });
+            if (dbResult) {
+                model = await this.get({ id });
+            }
+            return model;
+        } catch (error) {
+            throw new Error(`Are you missing property 'id' from the updated object?`);
         }
-        return model;
     }
 
     private getDbConnection(): Connection {

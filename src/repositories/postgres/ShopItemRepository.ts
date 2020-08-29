@@ -97,20 +97,26 @@ export class ShopItemRepository implements IShopItemRepository {
         return inserted;
     }
     async update(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
-        let model: ShopItemEntity = this.shopItemFactory.create(input as Partial<ShopItemEntity>);
-        const query = this.getDbConnection()
-            .createQueryBuilder()
-            .update('shoppingItems')
-            .set(input as QueryDeepPartialEntity<ShopItemInput>)
-            .where(`"id"=:id`, { id: input.id });
-        const dbResult: any = await query.execute().catch((error) => {
-            logger.error(error);
-            throw new Error(error);
-        });
-        if (dbResult) {
-            model = await this.get({ id: input.id });
+        let model: ShopItemEntity = new ShopItemEntity();
+        try {
+            const id: string = input.id!;
+            delete input.id;
+            const query = this.getDbConnection()
+                .createQueryBuilder()
+                .update('shoppingItems')
+                .set(input as QueryDeepPartialEntity<ShopItemInput>)
+                .where(`"id"=:id`, { id });
+            const dbResult: any = await query.execute().catch((error) => {
+                logger.error(error);
+                throw new Error(error);
+            });
+            if (dbResult) {
+                model = await this.get({ id });
+            }
+            return model;
+        } catch (error) {
+            throw new Error(`Are you missing property 'id' from the updated object?`);
         }
-        return model;
     }
 
     private getDbConnection(): Connection {

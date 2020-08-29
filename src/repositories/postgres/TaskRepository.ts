@@ -103,20 +103,26 @@ export class TaskRepository implements ITaskRepository {
         return inserted;
     }
     async update(input: Partial<TaskInput>): Promise<TaskEntity> {
-        let model: TaskEntity = this.taskFactory.create(input as Partial<TaskEntity>);
-        const query = this.getDbConnection()
-            .createQueryBuilder()
-            .update('tasks')
-            .set(input as QueryDeepPartialEntity<TaskInput>)
-            .where(`"id"=:id`, { id: input.id });
-        const dbResult: any = await query.execute().catch((error) => {
-            logger.error(error);
-            throw new Error(error);
-        });
-        if (dbResult) {
-            model = await this.get({ id: input.id });
+        let model: TaskEntity = new TaskEntity();
+        try {
+            const id: string = input.id!;
+            delete input.id;
+            const query = this.getDbConnection()
+                .createQueryBuilder()
+                .update('tasks')
+                .set(input as QueryDeepPartialEntity<TaskInput>)
+                .where(`"id"=:id`, { id });
+            const dbResult: any = await query.execute().catch((error) => {
+                logger.error(error);
+                throw new Error(error);
+            });
+            if (dbResult) {
+                model = await this.get({ id });
+            }
+            return model;
+        } catch (error) {
+            throw new Error(`Are you missing property 'id' from the updated object?`);
         }
-        return model;
     }
 
     private getDbConnection(): Connection {
