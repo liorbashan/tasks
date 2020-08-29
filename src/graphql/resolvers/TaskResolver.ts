@@ -50,7 +50,7 @@ export class TaskResolver {
 
     @Mutation((returns) => Task, { nullable: true })
     async UpdateTask(@Ctx() ctx: Context, @Arg('TaskInput', (type) => TaskInput) input: TaskInput): Promise<Task | null> {
-        const task: TaskEntity = await this.taskService.add(input).catch((error) => {
+        const task: TaskEntity = await this.taskService.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });

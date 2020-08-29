@@ -62,7 +62,7 @@ export class SpaceResolver {
 
     @Mutation((returns) => Space, { nullable: true })
     async UpdateSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<Space | null> {
-        const space: SpaceEntity = await this.service.add(input).catch((error) => {
+        const space: SpaceEntity = await this.service.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });

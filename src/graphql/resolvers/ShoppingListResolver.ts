@@ -56,7 +56,7 @@ export class ShoppingListResolver {
 
     @Mutation((returns) => ShoppingList, { nullable: true })
     async UpdateShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput) input: ShoppingListInput): Promise<ShoppingList | null> {
-        const shoppingList: ShoppingListEntity = await this.service.add(input).catch((error) => {
+        const shoppingList: ShoppingListEntity = await this.service.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });

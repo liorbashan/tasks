@@ -50,7 +50,7 @@ export class ShopItemResolver {
 
     @Mutation((returns) => ShopItem, { nullable: true })
     async UpdateShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput) input: ShopItemInput): Promise<ShopItem | null> {
-        const shopItem: ShopItemEntity = await this.service.add(input).catch((error) => {
+        const shopItem: ShopItemEntity = await this.service.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
