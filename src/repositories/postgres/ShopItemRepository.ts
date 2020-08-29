@@ -9,8 +9,8 @@ import { ShopItemInput } from '../../graphql/types/ShopItem';
 export class ShopItemRepository implements IShopItemRepository {
     constructor(protected shopItemFactory: IShopItemEntityFactory, protected dbConnection?: Connection) {}
 
-    async get(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
-        let model: ShopItemEntity = new ShopItemEntity();
+    async get(input: Partial<ShopItemInput>): Promise<ShopItemEntity | null> {
+        let model: ShopItemEntity | null = null;
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -81,8 +81,8 @@ export class ShopItemRepository implements IShopItemRepository {
         }
         return models;
     }
-    async add(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
-        let inserted: ShopItemEntity = new ShopItemEntity();
+    async add(input: Partial<ShopItemInput>): Promise<ShopItemEntity | null> {
+        let inserted: ShopItemEntity | null = null;
         const model: ShopItemEntity = this.shopItemFactory.create(input as Partial<ShopItemEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('shoppingItems').values([model]);
 
@@ -96,8 +96,8 @@ export class ShopItemRepository implements IShopItemRepository {
         }
         return inserted;
     }
-    async update(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
-        let model: ShopItemEntity = new ShopItemEntity();
+    async update(input: Partial<ShopItemInput>): Promise<ShopItemEntity | null> {
+        let model: ShopItemEntity | null = null;
         try {
             const id: string = input.id!;
             delete input.id;

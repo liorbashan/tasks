@@ -9,8 +9,8 @@ import { TaskEntity } from '../../models/task';
 export class TaskRepository implements ITaskRepository {
     constructor(private taskFactory: ITaskEntityFactory, protected dbConnection?: Connection) {}
 
-    async get(input: Partial<TaskInput>): Promise<TaskEntity> {
-        let model: TaskEntity = new TaskEntity();
+    async get(input: Partial<TaskInput>): Promise<TaskEntity | null> {
+        let model: TaskEntity | null = null;
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -87,8 +87,8 @@ export class TaskRepository implements ITaskRepository {
         }
         return models;
     }
-    async add(input: Partial<TaskInput>): Promise<TaskEntity> {
-        let inserted: TaskEntity = new TaskEntity();
+    async add(input: Partial<TaskInput>): Promise<TaskEntity | null> {
+        let inserted: TaskEntity | null = null;
         const taskModel: TaskEntity = this.taskFactory.create(input as Partial<TaskEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('tasks').values([taskModel]);
 
@@ -102,8 +102,8 @@ export class TaskRepository implements ITaskRepository {
         }
         return inserted;
     }
-    async update(input: Partial<TaskInput>): Promise<TaskEntity> {
-        let model: TaskEntity = new TaskEntity();
+    async update(input: Partial<TaskInput>): Promise<TaskEntity | null> {
+        let model: TaskEntity | null = null;
         try {
             const id: string = input.id!;
             delete input.id;

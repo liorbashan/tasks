@@ -31,7 +31,7 @@ export class TaskResolver {
 
     @Query((returns) => Task, { nullable: true })
     async GetTask(@Ctx() ctx: Context, @Arg('TaskInput', (type) => TaskInput) input: TaskInput): Promise<Task | null> {
-        const task: TaskEntity = await this.taskService.get(input).catch((error) => {
+        const task: TaskEntity | null = await this.taskService.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -41,7 +41,7 @@ export class TaskResolver {
 
     @Mutation((returns) => Task, { nullable: true })
     async AddTask(@Ctx() ctx: Context, @Arg('TaskInput', (type) => TaskInput) input: TaskInput): Promise<Task | null> {
-        const task: TaskEntity = await this.taskService.add(input).catch((error) => {
+        const task: TaskEntity | null = await this.taskService.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -50,7 +50,7 @@ export class TaskResolver {
 
     @Mutation((returns) => Task, { nullable: true })
     async UpdateTask(@Ctx() ctx: Context, @Arg('TaskInput', (type) => TaskInput) input: TaskInput): Promise<Task | null> {
-        const task: TaskEntity = await this.taskService.update(input).catch((error) => {
+        const task: TaskEntity | null = await this.taskService.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });

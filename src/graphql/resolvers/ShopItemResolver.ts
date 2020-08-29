@@ -31,7 +31,7 @@ export class ShopItemResolver {
 
     @Query((returns) => ShopItem, { nullable: true })
     async GetShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput) input: ShopItemInput): Promise<ShopItem | null> {
-        const shopItem: ShopItemEntity = await this.service.get(input).catch((error) => {
+        const shopItem: ShopItemEntity | null = await this.service.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -41,7 +41,7 @@ export class ShopItemResolver {
 
     @Mutation((returns) => ShopItem, { nullable: true })
     async AddShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput) input: ShopItemInput): Promise<ShopItem | null> {
-        const shopItem: ShopItemEntity = await this.service.add(input).catch((error) => {
+        const shopItem: ShopItemEntity | null = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -50,7 +50,7 @@ export class ShopItemResolver {
 
     @Mutation((returns) => ShopItem, { nullable: true })
     async UpdateShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput) input: ShopItemInput): Promise<ShopItem | null> {
-        const shopItem: ShopItemEntity = await this.service.update(input).catch((error) => {
+        const shopItem: ShopItemEntity | null = await this.service.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });

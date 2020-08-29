@@ -11,8 +11,8 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 export class UserRepository implements IUserRepository {
     constructor(private userModelFactory: UserEntityFactory, protected dbConnection?: Connection) {}
 
-    async add(data: Partial<AddUserInput>): Promise<UserEntity> {
-        let inserted: UserEntity = new UserEntity();
+    async add(data: Partial<AddUserInput>): Promise<UserEntity | null> {
+        let inserted: UserEntity | null = null;
         const user: UserEntity = this.userModelFactory.create(data as Partial<UserEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('users').values([user]);
 
@@ -26,8 +26,8 @@ export class UserRepository implements IUserRepository {
         }
         return inserted;
     }
-    async update(data: Partial<UpdateUserInput>): Promise<UserEntity> {
-        let model: UserEntity = new UserEntity();
+    async update(data: Partial<UpdateUserInput>): Promise<UserEntity | null> {
+        let model: UserEntity | null = null;
         try {
             const id: string = data.id!;
             delete data.id;
@@ -48,8 +48,8 @@ export class UserRepository implements IUserRepository {
             throw new Error(`Are you missing property 'id' from the updated object?`);
         }
     }
-    async get(data: Partial<UserEntity>): Promise<UserEntity> {
-        let model: UserEntity = new UserEntity();
+    async get(data: Partial<UserEntity>): Promise<UserEntity | null> {
+        let model: UserEntity | null = null;
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')

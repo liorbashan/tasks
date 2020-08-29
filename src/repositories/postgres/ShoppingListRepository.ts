@@ -9,8 +9,8 @@ import { ShoppingListInput } from '../../graphql/types/ShoppingList';
 export class ShoppingListRepository implements IShoppingListRepository {
     constructor(protected factory: IShoppingListEntityFactory, protected dbConnection?: Connection) {}
 
-    async get(input: ShoppingListInput): Promise<ShoppingListEntity> {
-        let model: ShoppingListEntity = new ShoppingListEntity();
+    async get(input: ShoppingListInput): Promise<ShoppingListEntity | null> {
+        let model: ShoppingListEntity | null = null;
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -73,8 +73,8 @@ export class ShoppingListRepository implements IShoppingListRepository {
         }
         return models;
     }
-    async add(input: ShoppingListInput): Promise<ShoppingListEntity> {
-        let inserted: ShoppingListEntity = new ShoppingListEntity();
+    async add(input: ShoppingListInput): Promise<ShoppingListEntity | null> {
+        let inserted: ShoppingListEntity | null = null;
         const model: ShoppingListEntity = this.factory.create(input as Partial<ShoppingListEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('shoppingLists').values([model]);
 
@@ -88,8 +88,8 @@ export class ShoppingListRepository implements IShoppingListRepository {
         }
         return inserted;
     }
-    async update(input: ShoppingListInput): Promise<ShoppingListEntity> {
-        let model: ShoppingListEntity = new ShoppingListEntity();
+    async update(input: ShoppingListInput): Promise<ShoppingListEntity | null> {
+        let model: ShoppingListEntity | null = null;
         try {
             const id: string = input.id!;
             delete input.id;

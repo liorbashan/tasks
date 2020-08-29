@@ -5,8 +5,8 @@ import { ShopItemInput } from '../graphql/types/ShopItem';
 export class ShopItemService implements IShopItemRepository {
     constructor(protected shopItemRepo: IShopItemRepository) {}
 
-    async get(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
-        const result: ShopItemEntity = await this.shopItemRepo.get(input).catch((error) => {
+    async get(input: Partial<ShopItemInput>): Promise<ShopItemEntity | null> {
+        const result: ShopItemEntity | null = await this.shopItemRepo.get(input).catch((error) => {
             throw new Error(error);
         });
         return result;
@@ -17,14 +17,14 @@ export class ShopItemService implements IShopItemRepository {
         });
         return result;
     }
-    async add(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
-        const result: ShopItemEntity = await this.shopItemRepo.add(input).catch((error) => {
+    async add(input: Partial<ShopItemInput>): Promise<ShopItemEntity | null> {
+        const result: ShopItemEntity | null = await this.shopItemRepo.add(input).catch((error) => {
             throw new Error(error);
         });
         return result;
     }
-    async update(input: Partial<ShopItemInput>): Promise<ShopItemEntity> {
-        const result: ShopItemEntity = await this.shopItemRepo.update(input).catch((error) => {
+    async update(input: Partial<ShopItemInput>): Promise<ShopItemEntity | null> {
+        const result: ShopItemEntity | null = await this.shopItemRepo.update(input).catch((error) => {
             throw new Error(error);
         });
         return result;

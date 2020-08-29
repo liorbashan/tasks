@@ -5,8 +5,8 @@ import { ShoppingListInput } from '../graphql/types/ShoppingList';
 export class ShoppingListService implements IShoppingListRepository {
     constructor(protected repo: IShoppingListRepository) {}
 
-    async get(input: ShoppingListInput): Promise<ShoppingListEntity> {
-        const result: ShoppingListEntity = await this.repo.get(input).catch((error) => {
+    async get(input: ShoppingListInput): Promise<ShoppingListEntity | null> {
+        const result: ShoppingListEntity | null = await this.repo.get(input).catch((error) => {
             throw new Error(error);
         });
         return result;
@@ -17,14 +17,14 @@ export class ShoppingListService implements IShoppingListRepository {
         });
         return result;
     }
-    async add(input: ShoppingListInput): Promise<ShoppingListEntity> {
-        const result: ShoppingListEntity = await this.repo.add(input).catch((error) => {
+    async add(input: ShoppingListInput): Promise<ShoppingListEntity | null> {
+        const result: ShoppingListEntity | null = await this.repo.add(input).catch((error) => {
             throw new Error(error);
         });
         return result;
     }
-    async update(input: ShoppingListInput): Promise<ShoppingListEntity> {
-        const result: ShoppingListEntity = await this.repo.update(input).catch((error) => {
+    async update(input: ShoppingListInput): Promise<ShoppingListEntity | null> {
+        const result: ShoppingListEntity | null = await this.repo.update(input).catch((error) => {
             throw new Error(error);
         });
         return result;

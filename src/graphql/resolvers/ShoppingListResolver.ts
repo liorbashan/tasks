@@ -37,7 +37,7 @@ export class ShoppingListResolver {
 
     @Query((returns) => ShoppingList, { nullable: true })
     async GetShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput) input: ShoppingListInput): Promise<ShoppingList | null> {
-        const shoppingList: ShoppingListEntity = await this.service.get(input).catch((error) => {
+        const shoppingList: ShoppingListEntity | null = await this.service.get(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -47,7 +47,7 @@ export class ShoppingListResolver {
 
     @Mutation((returns) => ShoppingList, { nullable: true })
     async AddShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput) input: ShoppingListInput): Promise<ShoppingList | null> {
-        const shoppingList: ShoppingListEntity = await this.service.add(input).catch((error) => {
+        const shoppingList: ShoppingListEntity | null = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
@@ -56,7 +56,7 @@ export class ShoppingListResolver {
 
     @Mutation((returns) => ShoppingList, { nullable: true })
     async UpdateShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput) input: ShoppingListInput): Promise<ShoppingList | null> {
-        const shoppingList: ShoppingListEntity = await this.service.update(input).catch((error) => {
+        const shoppingList: ShoppingListEntity | null = await this.service.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
         });
