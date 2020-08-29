@@ -10,7 +10,7 @@ export class SpaceRepository implements ISpaceRepository {
     constructor(private spaceFactory: ISpaceEntityFactory, protected dbConnection?: Connection) {}
 
     async get(input: SpaceInput): Promise<SpaceEntity | null> {
-        let model: SpaceEntity = new SpaceEntity();
+        let model: SpaceEntity | null = null;
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
@@ -41,7 +41,7 @@ export class SpaceRepository implements ISpaceRepository {
         if (dbResult) {
             model = this.spaceFactory.create(dbResult);
         }
-        return model ? model : null;
+        return model;
     }
     async getAll(input?: SpaceInput): Promise<SpaceEntity[]> {
         const models: SpaceEntity[] = [];
@@ -80,7 +80,7 @@ export class SpaceRepository implements ISpaceRepository {
         return models;
     }
     async add(input: SpaceInput): Promise<SpaceEntity | null> {
-        let inserted: SpaceEntity | null = new SpaceEntity();
+        let inserted: SpaceEntity | null = null;
         const spaceModel: SpaceEntity = this.spaceFactory.create(input as Partial<SpaceEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('spaces').values([spaceModel]);
 
@@ -95,7 +95,7 @@ export class SpaceRepository implements ISpaceRepository {
         return inserted;
     }
     async update(input: SpaceInput): Promise<SpaceEntity | null> {
-        let model: SpaceEntity | null = new SpaceEntity();
+        let model: SpaceEntity | null = null;
         try {
             const id: string = input.id!;
             delete input.id;
