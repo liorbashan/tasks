@@ -9,7 +9,7 @@ import { SpaceInput } from '../../graphql/types/Space';
 export class SpaceRepository implements ISpaceRepository {
     constructor(private spaceFactory: ISpaceEntityFactory, protected dbConnection?: Connection) {}
 
-    async get(input: SpaceInput): Promise<SpaceEntity> {
+    async get(input: SpaceInput): Promise<SpaceEntity | null> {
         let model: SpaceEntity = new SpaceEntity();
         const query = this.getDbConnection()
             .createQueryBuilder()
@@ -41,7 +41,7 @@ export class SpaceRepository implements ISpaceRepository {
         if (dbResult) {
             model = this.spaceFactory.create(dbResult);
         }
-        return model;
+        return model ? model : null;
     }
     async getAll(input?: SpaceInput): Promise<SpaceEntity[]> {
         const models: SpaceEntity[] = [];
@@ -79,8 +79,8 @@ export class SpaceRepository implements ISpaceRepository {
         }
         return models;
     }
-    async add(input: SpaceInput): Promise<SpaceEntity> {
-        let inserted: SpaceEntity = new SpaceEntity();
+    async add(input: SpaceInput): Promise<SpaceEntity | null> {
+        let inserted: SpaceEntity | null = new SpaceEntity();
         const spaceModel: SpaceEntity = this.spaceFactory.create(input as Partial<SpaceEntity>);
         const query = this.getDbConnection().createQueryBuilder().insert().into('spaces').values([spaceModel]);
 
@@ -94,8 +94,8 @@ export class SpaceRepository implements ISpaceRepository {
         }
         return inserted;
     }
-    async update(input: SpaceInput): Promise<SpaceEntity> {
-        let model: SpaceEntity = new SpaceEntity();
+    async update(input: SpaceInput): Promise<SpaceEntity | null> {
+        let model: SpaceEntity | null = new SpaceEntity();
         try {
             const id: string = input.id!;
             delete input.id;
