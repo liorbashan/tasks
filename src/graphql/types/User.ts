@@ -44,8 +44,8 @@ export class User {
 
 @InputType()
 export class AddUserInput {
-    @Field()
-    public id: string;
+    @Field({ nullable: true })
+    public id?: string;
     @Field()
     firstName: string;
     @Field()

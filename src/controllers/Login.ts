@@ -62,7 +62,7 @@ export class LoginController {
             picture: user.picture,
         };
         const options: SignOptions = {
-            expiresIn: '30d',
+            expiresIn: 2592000, // 60 * 60 * 24 * 30 = 30 Days in seconds
             algorithm: 'HS256',
             issuer: 'Tasks',
             subject: 'Tasks User',

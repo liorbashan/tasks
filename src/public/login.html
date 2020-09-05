@@ -50,6 +50,19 @@
                 const jwt = await response.text();
                 localStorage.setItem('token', jwt);
             }
+
+            async function signout() {
+                firebase
+                    .auth()
+                    .signOut()
+                    .then(function () {
+                        console.log('Sign-out successful.');
+                    })
+                    .catch(function (error) {
+                        console.log('An error happened:', error.message);
+                    });
+            }
         </script>
+        <button onclick="signout()">signout</button>
     </body>
 </html>

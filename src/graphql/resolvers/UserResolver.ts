@@ -1,10 +1,11 @@
+import { isAuth } from './../auth/auth';
 import { Container } from 'typedi';
 import { logger } from './../../utils/Logger';
 import { UserEntity } from '../../models/user/UserEntity';
 import { Context } from './../../models/Context';
 import { UserService } from './../../services/UserService';
 import { User, AddUserInput, QueryUserInput, UpdateUserInput } from '../types/User';
-import { Resolver, Mutation, Arg, Query, Ctx } from 'type-graphql';
+import { Resolver, Mutation, Arg, Query, Ctx, UseMiddleware } from 'type-graphql';
 
 @Resolver((of) => User)
 export class UserResolver {
@@ -39,6 +40,7 @@ export class UserResolver {
     }
 
     @Mutation((returns) => User, { nullable: true })
+    @UseMiddleware(isAuth)
     async AddUser(@Ctx() ctx: Context, @Arg('AddUserInput') input: AddUserInput): Promise<User | null> {
         const userModel: UserEntity | null = await this.userService.add(input).catch((error) => {
             logger.error(error);
@@ -48,6 +50,7 @@ export class UserResolver {
     }
 
     @Mutation((returns) => User, { nullable: true })
+    @UseMiddleware(isAuth)
     async UpdateUser(@Ctx() ctx: Context, @Arg('UpdateUserInput') input: UpdateUserInput): Promise<User | null> {
         const userModel: UserEntity | null = await this.userService.update(input).catch((error) => {
             logger.error(error);
