@@ -3,63 +3,61 @@ import { ObjectType, Field, InputType } from 'type-graphql';
 
 @ObjectType()
 export class User {
-    constructor(protected user: UserEntity) {}
-
-    getModel(): UserEntity {
-        return this.user;
-    }
-
     @Field()
-    get id(): string {
-        return this.user.id;
-    }
-
+    public id: string;
     @Field()
-    get firstName(): string {
-        return this.user.firstName;
-    }
-
+    public firstName: string;
     @Field()
-    get lastName(): string {
-        return this.user.lastName;
-    }
-
+    public lastName: string;
     @Field()
-    get email(): string {
-        return this.user.email;
-    }
-
+    public email: string;
     @Field()
-    get phone(): string {
-        return this.user.phone;
-    }
-
-    @Field((type) => String, { nullable: true })
-    get spaceId(): string | null {
-        return this.user.spaceId ? this.user.spaceId : null;
-    }
-
+    public emailVerified: boolean;
+    @Field({ nullable: true })
+    public picture?: string;
+    @Field({ nullable: true })
+    public phone?: string;
+    @Field({ nullable: true })
+    public spaceId?: string;
     @Field()
-    get isActive(): boolean {
-        return this.user.isActive;
+    public isActive: boolean;
+    @Field()
+    public createdAt: string;
+
+    constructor(protected user: UserEntity) {
+        this.id = user.id;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.email = user.email;
+        this.emailVerified = user.emailVerified;
+        this.picture = user.picture;
+        this.spaceId = user.spaceId;
+        this.phone = user.phone;
+        this.isActive = user.isActive;
+        this.createdAt = user.createdAt;
     }
 
-    @Field()
-    get createdAt(): string {
-        return this.user.createdAt;
+    get(): UserEntity {
+        return this;
     }
 }
 
 @InputType()
 export class AddUserInput {
     @Field()
+    public id: string;
+    @Field()
     firstName: string;
     @Field()
     lastName: string;
     @Field()
     email: string;
+    @Field()
+    public emailVerified: boolean;
     @Field({ nullable: true })
-    phone?: string;
+    public picture?: string;
+    @Field({ nullable: true })
+    public phone?: string;
     @Field({ nullable: true })
     spaceId?: string;
 }

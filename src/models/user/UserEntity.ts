@@ -3,8 +3,10 @@ export class UserEntity {
     firstName: string;
     lastName: string;
     email: string;
+    emailVerified: boolean;
+    picture?: string;
     spaceId?: string;
-    phone: string;
+    phone?: string;
     isActive: boolean;
     createdAt: string;
 }
