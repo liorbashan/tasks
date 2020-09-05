@@ -16,7 +16,7 @@ export const isAuth: MiddlewareFn<Context> = ({ context }, next) => {
         context.payload = payload as any;
     } catch (err) {
         console.log(err);
-        throw new Error(`Not authenticated - ${err.message}`);
+        throw new Error(`Bad Token: ${err.message}`);
     }
     return next();
 };

@@ -5,8 +5,7 @@
         <title>Login</title>
         <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
-        <!-- <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
-        <script src="https://unpkg.com/vue"></script> -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script> -->
     </head>
     <body>
         <script>
@@ -21,6 +20,7 @@
                 appId: '1:1087240179234:web:6c616025e8fb0fac52847b',
             };
             firebase.initializeApp(firebaseConfig);
+            signInWithGoogle();
 
             async function signInWithGoogle() {
                 const provider = new firebase.auth.GoogleAuthProvider();
@@ -30,13 +30,12 @@
                     .catch((error) => alert('🤕' + error.message));
                 if (data) {
                     const userData = data.additionalUserInfo.profile;
-                    console.log(userData);
                     await sendUserData('/auth/callback', userData);
                 }
             }
 
             async function sendUserData(url, userData) {
-                await fetch(url, {
+                const response = await fetch(url, {
                     method: 'POST',
                     mode: 'same-origin', // no-cors, *cors, same-origin
                     cache: 'no-cache',
@@ -48,82 +47,9 @@
                     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
                     body: JSON.stringify(userData), // body data type must match "Content-Type" header
                 });
+                const jwt = await response.text();
+                localStorage.setItem('token', jwt);
             }
-            signInWithGoogle();
         </script>
-        <div id="app">
-            <h1>Vue School - Firebase Authentication</h1>
-
-            <div>
-                <h2>Sign in with Google</h2>
-                <button @click="signInWithGoogle">Sign In</button>
-            </div>
-        </div>
-
-        <!-- <script>
-            // Initialize Firebase
-            const firebaseConfig = {
-                apiKey: 'AIzaSyAhkTJMwsuCpUZT-kjePF1CvCNJI_boCpE',
-                authDomain: 'lb-apps-auth.firebaseapp.com',
-                databaseURL: 'https://lb-apps-auth.firebaseio.com',
-                projectId: 'lb-apps-auth',
-                storageBucket: 'lb-apps-auth.appspot.com',
-                messagingSenderId: '1087240179234',
-                appId: '1:1087240179234:web:6c616025e8fb0fac52847b',
-            };
-            firebase.initializeApp(firebaseConfig);
-
-            new Vue({
-                el: '#app',
-
-                data: {
-                    email: '',
-                    password: '',
-                    displayName: null,
-                    photoURL: null,
-                    newPassword: null,
-                    favoriteFood: null,
-                    authUser: null,
-                },
-
-                computed: {
-                    linkedGoogle() {
-                        return !!this.authUser.providerData.find((provider) => provider.providerId === 'google.com');
-                    },
-                    linkedPassword() {
-                        return !!this.authUser.providerData.find((provider) => provider.providerId === 'password');
-                    },
-                },
-
-                methods: {
-                    signInWithGoogle() {
-                        const provider = new firebase.auth.GoogleAuthProvider();
-                        firebase
-                            .auth()
-                            .signInWithPopup(provider)
-                            .catch((error) => alert('🤕' + error.message))
-                            .then((data) => console.log(data.user, data.credential.accessToken));
-                    },
-                    linkGoogle() {
-                        const provider = new firebase.auth.GoogleAuthProvider();
-                        this.authUser.linkWithPopup(provider).catch((error) => alert('🤕' + error.message));
-                    },
-                    unlinkGoogle() {
-                        this.authUser.unlink('google.com');
-                    },
-                },
-
-                created() {
-                    firebase.auth().onAuthStateChanged((user) => {
-                        this.authUser = user;
-                        if (user) {
-                            this.displayName = user.displayName;
-                            this.photoURL = user.photoURL;
-                            this.email = user.email;
-                        }
-                    });
-                },
-            });
-        </script> -->
     </body>
 </html>

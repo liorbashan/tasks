@@ -1,12 +1,10 @@
 export interface IJWTPayload {
-    iss: string;
-    iat: number;
-    exp: number;
-    givenName: string;
-    familyName: string;
-    picture: string;
-    userId: string;
+    firstName: string;
+    lastName: string;
+    picture?: string;
+    phone?: string;
+    id: string;
     email: string;
-    emailVerified: boolean;
+    emailVerified?: boolean;
     groups: string[];
 }

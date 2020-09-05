@@ -1,11 +1,13 @@
+import { AddUserInput } from './../graphql/types/User';
 import { IAuthProviderUser } from './../models/IAuthProviderUser';
 import { IUserRepository } from './../interfaces/IUserRepository';
 import { Container } from 'typedi';
 import { UserEntity } from './../models/user/UserEntity';
 import { IJWTPayload } from './../models/IJWTPayload';
 import { logger } from './../utils/Logger';
-import { JsonController, Get, Post, Res, Body } from 'routing-controllers';
+import { JsonController, Get, Post, Res, Body, BadRequestError } from 'routing-controllers';
 import path from 'path';
+import jwt, { SignOptions } from 'jsonwebtoken';
 
 @JsonController('/auth')
 export class LoginController {
@@ -21,40 +23,51 @@ export class LoginController {
     @Post('/callback')
     public async saveUser(@Body() data: IAuthProviderUser): Promise<string> {
         logger.info(data);
-        // todo: lookup user by ID, if not exists, create and return it.
-        const userEntity: UserEntity | null | void = await this.userService.get({ email: data.email }).catch((error) => {
+        let userEntity: UserEntity | null = null;
+        let token = '';
+        // Lookup user by ID, if not exists, create and return it.
+        userEntity = await this.userService.get({ email: data.email }).catch((error) => {
             logger.warn('Fetch user from database: ', error);
+            throw new BadRequestError(error.message);
         });
         if (!userEntity) {
             // Add user to repo
-            await this.userService.add({
-                id: data.id,
+            const newUserData: Partial<AddUserInput> = {
                 email: data.email,
-                emailVerified: data.verified_email,
                 firstName: data.given_name,
                 lastName: data.family_name,
+                emailVerified: data.verified_email,
                 picture: data.picture,
+            };
+            userEntity = await this.userService.add(newUserData).catch((error) => {
+                logger.warn('Fetch user from database: ', error);
+                throw new BadRequestError(error.message);
             });
-        } else {
-            const token: string = this.generateJWT(userEntity);
-            return token;
         }
+        if (userEntity) {
+            token = this.generateJWT(userEntity);
+        }
+        return token;
     }
 
     private generateJWT(user: UserEntity): string {
         const secret: string = process.env.JWT_SECRET as string;
         const payload: IJWTPayload = {
-            iss: 'Tasks',
-            iat: Math.floor(Date.now() / 1000),
-            exp: Math.floor(Date.now() / 1000) + 3600 * 24 * 60,
-            givenName: user.firstName,
+            firstName: user.firstName,
             lastName: user.lastName,
-            userId: user.id,
+            id: user.id,
             email: user.email,
+            emailVerified: user.emailVerified,
+            groups: [],
             picture: user.picture,
-            groups: user.groups,
         };
-        const token: string = jwt.sign(payload, secret);
+        const options: SignOptions = {
+            expiresIn: '30d',
+            algorithm: 'HS256',
+            issuer: 'Tasks',
+            subject: 'Tasks User',
+        };
+        const token: string = jwt.sign(payload, secret, options);
         return token;
     }
 }

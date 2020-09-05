@@ -5,7 +5,9 @@ CREATE TABLE users (
     "firstName" VARCHAR NOT NULL,
     "lastName" VARCHAR NOT NULL,
     "email" VARCHAR NOT NULL UNIQUE,
-    "phone" VARCHAR,
+    "emailVerified" BOOLEAN NOT NULL,
+    "picture" VARCHAR NULL,
+    "phone" VARCHAR NULL,
     "spaceId" VARCHAR NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
