@@ -7,11 +7,16 @@ import { Container } from 'typedi';
 import { useExpressServer, useContainer } from 'routing-controllers';
 import bodyParser = require('body-parser');
 import { graphQl } from '../graphql/graphql';
+import path from 'path';
 
 export async function init(): Promise<void> {
     const server = express();
     server.use(cors());
     server.use(bodyParser.json({ limit: '1mb' }));
+    server.engine('.html', require('ejs').renderFile);
+    const publicFolder = path.join(__dirname, '../', 'public');
+    server.set('views', `./${publicFolder}`);
+    // server.use(express.static(publicFolder));
 
     // Add GraphQL middleware
     await graphQl(server);
