@@ -13,10 +13,7 @@ export async function init(): Promise<void> {
     const server = express();
     server.use(cors());
     server.use(bodyParser.json({ limit: '1mb' }));
-    server.engine('.html', require('ejs').renderFile);
     const publicFolder = path.join(__dirname, '../', 'public');
-    server.set('views', `./${publicFolder}`);
-    // server.use(express.static(publicFolder));
 
     // Add GraphQL middleware
     await graphQl(server);
@@ -29,6 +26,14 @@ export async function init(): Promise<void> {
         controllers: [LoginController], // and configure it the way you need (controllers, validation, etc.)
         middlewares: [],
     });
+
+    server.get('/login', (req, res) => {
+        res.sendFile(path.join(publicFolder, 'login.html'));
+    });
+    server.get('*', (req, res) => {
+        res.sendFile(path.join(publicFolder, 'index.html'));
+    });
+
     const port = Number(process.env.PORT);
     await server.listen(port);
     logger.info(`server listening on port ${port}`);

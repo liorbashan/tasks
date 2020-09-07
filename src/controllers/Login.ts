@@ -5,8 +5,7 @@ import { Container } from 'typedi';
 import { UserEntity } from './../models/user/UserEntity';
 import { IJWTPayload } from './../models/IJWTPayload';
 import { logger } from './../utils/Logger';
-import { JsonController, Get, Post, Res, Body, BadRequestError } from 'routing-controllers';
-import path from 'path';
+import { JsonController, Post, Body, BadRequestError } from 'routing-controllers';
 import jwt, { SignOptions } from 'jsonwebtoken';
 
 @JsonController('/auth')
@@ -15,20 +14,14 @@ export class LoginController {
         this.userService = Container.get('UserService');
     }
 
-    @Get('/login')
-    public login(@Res() res: any): any {
-        const file = path.join(__dirname, '../', '/public/login.html');
-        res.render(file);
-    }
     @Post('/callback')
     public async saveUser(@Body() data: IAuthProviderUser): Promise<string> {
         logger.info(data);
-        let userEntity: UserEntity | null = null;
+        let userEntity: UserEntity | null | void = null;
         let token = '';
         // Lookup user by ID, if not exists, create and return it.
         userEntity = await this.userService.get({ email: data.email }).catch((error) => {
             logger.warn('Fetch user from database: ', error);
-            throw new BadRequestError(error.message);
         });
         if (!userEntity) {
             // Add user to repo
