@@ -5,14 +5,13 @@ import express from 'express';
 import cors from 'cors';
 import { Container } from 'typedi';
 import { useExpressServer, useContainer } from 'routing-controllers';
-import bodyParser = require('body-parser');
 import { graphQl } from '../graphql/graphql';
 import path from 'path';
 
 export async function init(): Promise<void> {
     const server = express();
     server.use(cors());
-    server.use(bodyParser.json({ limit: '1mb' }));
+    server.use(express.json({ limit: '1mb' }));
     const publicFolder = path.join(__dirname, '../', 'public');
 
     // Add GraphQL middleware
