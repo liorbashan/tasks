@@ -1,3 +1,4 @@
+import { ShoppingListEntity } from './../../models/shoppingList/ShoppingListEntity';
 import { ShopItemEntity } from '../../models/shopItem/ShopItemEntity';
 import { IShopItemRepository } from './../../interfaces/IShopItemRepository';
 import { logger } from './../../utils/Logger';
@@ -6,7 +7,6 @@ import { Container } from 'typedi';
 import { IShoppingListRepository } from './../../interfaces/IShoppingListRepository';
 import { ShoppingList, ShoppingListInput } from '../types/ShoppingList';
 import { Resolver, Query, Ctx, Arg, Mutation, FieldResolver, Root } from 'type-graphql';
-import { ShoppingListEntity } from '../../models/ShoppingList';
 import { ShopItem } from '../types/ShopItem';
 
 @Resolver((of) => ShoppingList)

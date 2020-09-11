@@ -1,3 +1,4 @@
+import { SpaceEntity } from './../../models/space/SpaceEntity';
 import { TaskEntity } from '../../models/task/TaskEntity';
 import { Task } from '../types/Task';
 import { ShoppingListEntity } from '../../models/shoppingList/ShoppingListEntity';
@@ -9,7 +10,6 @@ import { Container } from 'typedi';
 import { ISpaceRepository } from './../../interfaces/ISpaceRepository';
 import { Space, SpaceInput } from '../types/Space';
 import { Resolver, Query, Ctx, Arg, Mutation, FieldResolver, Root } from 'type-graphql';
-import { SpaceEntity } from '../../models/Space';
 import { IShoppingListRepository } from '../../interfaces/IShoppingListRepository';
 
 @Resolver((of) => Space)
