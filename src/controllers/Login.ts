@@ -19,7 +19,7 @@ export class LoginController {
         logger.info(data);
         let userEntity: UserEntity | null | void = null;
         let token = '';
-        // Lookup user by ID, if not exists, create and return it.
+        // Lookup user by Email, if not exists, create and return it.
         userEntity = await this.userService.get({ email: data.email }).catch((error) => {
             logger.warn('Fetch user from database: ', error);
         });
@@ -45,17 +45,24 @@ export class LoginController {
 
     private generateJWT(user: UserEntity): string {
         const secret: string = process.env.JWT_SECRET as string;
+        let expirationPeriodInSeconds = 2592000; // 60 * 60 * 24 * 30 = 30 Days in seconds
+        try {
+            expirationPeriodInSeconds = Number(process.env.TOKEN_EXPIRATION_SECONDS as string);
+        } catch (error) {
+            logger.warn(`Failed to parse token expiration number: ${error.message}`);
+        }
         const payload: IJWTPayload = {
             firstName: user.firstName,
             lastName: user.lastName,
             id: user.id,
             email: user.email,
+            spaceId: user.spaceId,
             emailVerified: user.emailVerified,
             groups: [],
             picture: user.picture,
         };
         const options: SignOptions = {
-            expiresIn: 2592000, // 60 * 60 * 24 * 30 = 30 Days in seconds
+            expiresIn: expirationPeriodInSeconds,
             algorithm: 'HS256',
             issuer: 'Tasks',
             subject: 'Tasks User',

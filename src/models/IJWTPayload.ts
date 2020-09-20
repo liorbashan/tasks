@@ -3,6 +3,7 @@ export interface IJWTPayload {
     lastName: string;
     picture?: string;
     phone?: string;
+    spaceId?: string;
     id: string;
     email: string;
     emailVerified?: boolean;

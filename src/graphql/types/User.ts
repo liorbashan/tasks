@@ -96,4 +96,7 @@ export class QueryUserInput {
 
     @Field({ nullable: true })
     isActive?: boolean;
+
+    @Field({ nullable: true })
+    spaceId?: string;
 }

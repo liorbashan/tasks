@@ -1,3 +1,6 @@
+import { IUserRepository } from './../../interfaces/IUserRepository';
+import { UserEntity } from './../../models/user/UserEntity';
+import { User } from './../types/User';
 import { SpaceEntity } from './../../models/space/SpaceEntity';
 import { TaskEntity } from '../../models/task/TaskEntity';
 import { Task } from '../types/Task';
@@ -14,7 +17,7 @@ import { IShoppingListRepository } from '../../interfaces/IShoppingListRepositor
 
 @Resolver((of) => Space)
 export class SpaceResolver {
-    constructor(private service: ISpaceRepository, private taskService: ITaskRepository, private shoppingListService: IShoppingListRepository) {
+    constructor(private service: ISpaceRepository, private taskService: ITaskRepository, private shoppingListService: IShoppingListRepository, private userService: IUserRepository) {
         if (!service) {
             this.service = Container.get('SpaceService');
         }
@@ -23,6 +26,9 @@ export class SpaceResolver {
         }
         if (!shoppingListService) {
             this.shoppingListService = Container.get('ShoppingListService');
+        }
+        if (!userService) {
+            this.userService = Container.get('UserService');
         }
     }
 
@@ -97,5 +103,20 @@ export class SpaceResolver {
             }
         }
         return tasks;
+    }
+
+    @FieldResolver((type) => [User], { nullable: true })
+    async Users(@Root() space: Space): Promise<User[]> {
+        const users: User[] = [];
+        const userEntities: UserEntity[] = await this.userService.getAll({ spaceId: space.get().id }).catch((error) => {
+            logger.error(error);
+            throw new Error(error);
+        });
+        if (userEntities) {
+            for (const item of userEntities) {
+                users.push(new User(item));
+            }
+        }
+        return users;
     }
 }

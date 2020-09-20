@@ -100,19 +100,22 @@ export class UserRepository implements IUserRepository {
             .where('1=1');
 
         if (data?.isActive) {
-            query.andWhere('isActive=:isActive', { isActive: data.isActive });
+            query.andWhere(`"isActive"=:isActive`, { isActive: data.isActive });
         }
         if (data?.id) {
-            query.andWhere('id=:id', { id: data.id });
+            query.andWhere(`"id"=:id`, { id: data.id });
         }
         if (data?.lastName) {
-            query.andWhere('lastName=:lastName', { lastName: data.lastName });
+            query.andWhere(`"lastName"=:lastName`, { lastName: data.lastName });
         }
         if (data?.firstName) {
-            query.andWhere('firstName=:firstName', { firstName: data.firstName });
+            query.andWhere(`"firstName"=:firstName`, { firstName: data.firstName });
         }
         if (data?.email) {
-            query.andWhere('email=:email', { email: data.email });
+            query.andWhere(`"email"=:email`, { email: data.email });
+        }
+        if (data?.spaceId) {
+            query.andWhere(`"spaceId"=:spaceId`, { spaceId: data.spaceId });
         }
 
         const dbResult: any = await query.getRawMany().catch((error) => {
