@@ -43,6 +43,7 @@ export async function graphQl(server: any): Promise<void> {
         },
         debug: debugMode,
         tracing: debugMode,
+        introspection: true,
     });
 
     apolloServer.applyMiddleware({ app: server });
