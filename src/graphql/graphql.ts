@@ -13,6 +13,8 @@ import { ApolloServer } from 'apollo-server-express';
 
 export async function graphQl(server: any): Promise<void> {
     const debugMode = process.env.GRAPHQL_DEBUG?.toLowerCase() === 'true' ? true : false;
+    const introspection = debugMode ? true : false;
+    const playground = debugMode ? true : false;
     const schema = <GraphQLSchema>await buildSchema({
         resolvers: [UserResolver, SpaceResolver, ShoppingListResolver, ShopItemResolver, TaskResolver],
         // automatically create `schema.gql` file with schema definition in current folder
@@ -43,7 +45,8 @@ export async function graphQl(server: any): Promise<void> {
         },
         debug: debugMode,
         tracing: debugMode,
-        introspection: true,
+        introspection,
+        playground,
     });
 
     apolloServer.applyMiddleware({ app: server });
