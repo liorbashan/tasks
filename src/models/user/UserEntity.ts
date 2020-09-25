@@ -7,6 +7,7 @@ export class UserEntity {
     picture?: string;
     spaceId?: string;
     phone?: string;
+    role?: string;
     isActive: boolean;
     createdAt: string;
 }

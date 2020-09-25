@@ -10,6 +10,7 @@ CREATE TABLE users (
     "emailVerified" BOOLEAN NOT NULL,
     "picture" VARCHAR NULL,
     "phone" VARCHAR NULL,
+    "role" VARCHAR NULL,
     "spaceId" VARCHAR NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP

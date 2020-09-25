@@ -29,4 +29,10 @@ export class TaskService implements ITaskRepository {
         });
         return result;
     }
+    async delete(id: string): Promise<number> {
+        const result: number = await this.taskRepo.delete(id).catch((error) => {
+            throw new Error(error);
+        });
+        return result;
+    }
 }

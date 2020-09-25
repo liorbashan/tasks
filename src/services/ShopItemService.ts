@@ -29,4 +29,10 @@ export class ShopItemService implements IShopItemRepository {
         });
         return result;
     }
+    async delete(id: string): Promise<number> {
+        const result: number = await this.shopItemRepo.delete(id).catch((error) => {
+            throw new Error(error);
+        });
+        return result;
+    }
 }

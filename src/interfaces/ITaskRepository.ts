@@ -5,4 +5,5 @@ export interface ITaskRepository {
     getAll(input?: Partial<TaskInput>): Promise<TaskEntity[]>;
     add(input: Partial<TaskInput>): Promise<TaskEntity | null>;
     update(input: Partial<TaskInput>): Promise<TaskEntity | null>;
+    delete(id: string): Promise<number>;
 }

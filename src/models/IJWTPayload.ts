@@ -7,5 +7,5 @@ export interface IJWTPayload {
     id: string;
     email: string;
     emailVerified?: boolean;
-    groups: string[];
+    role?: string;
 }

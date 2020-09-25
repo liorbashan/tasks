@@ -6,4 +6,5 @@ export interface IShopItemRepository {
     getAll(input: Partial<ShopItemInput>): Promise<ShopItemEntity[]>;
     add(input: Partial<ShopItemInput>): Promise<ShopItemEntity | null>;
     update(input: Partial<ShopItemInput>): Promise<ShopItemEntity | null>;
+    delete(id: string): Promise<number>;
 }

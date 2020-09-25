@@ -18,6 +18,8 @@ export class User {
     @Field({ nullable: true })
     public phone?: string;
     @Field({ nullable: true })
+    public role?: string;
+    @Field({ nullable: true })
     public spaceId?: string;
     @Field()
     public isActive: boolean;
@@ -33,6 +35,7 @@ export class User {
         this.picture = user.picture;
         this.spaceId = user.spaceId;
         this.phone = user.phone;
+        this.role = user.role;
         this.isActive = user.isActive;
         this.createdAt = user.createdAt;
     }
@@ -45,7 +48,7 @@ export class User {
 @InputType()
 export class AddUserInput {
     @Field({ nullable: true })
-    public id?: string;
+    id?: string;
     @Field()
     firstName: string;
     @Field()
@@ -53,11 +56,13 @@ export class AddUserInput {
     @Field()
     email: string;
     @Field()
-    public emailVerified: boolean;
+    emailVerified: boolean;
     @Field({ nullable: true })
-    public picture?: string;
+    picture?: string;
     @Field({ nullable: true })
-    public phone?: string;
+    phone?: string;
+    @Field({ nullable: true })
+    role?: string;
     @Field({ nullable: true })
     spaceId?: string;
 }
@@ -74,6 +79,8 @@ export class UpdateUserInput {
     email?: string;
     @Field({ nullable: true })
     phone?: string;
+    @Field({ nullable: true })
+    role?: string;
     @Field({ nullable: true })
     spaceId?: string;
     @Field({ nullable: true })

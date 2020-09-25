@@ -125,6 +125,20 @@ export class TaskRepository implements ITaskRepository {
         }
     }
 
+    async delete(id: string): Promise<number> {
+        try {
+            const query = this.getDbConnection().createQueryBuilder().delete().from('tasks', 'tasks').where(`"id"=:id`, { id });
+            const dbResult: any = await query.execute().catch((error) => {
+                logger.error(error);
+                throw new Error(error);
+            });
+            return dbResult?.affected ? dbResult.affected : 0;
+        } catch (error) {
+            logger.error(error);
+            throw new Error(error);
+        }
+    }
+
     private getDbConnection(): Connection {
         if (!this.dbConnection) {
             return getConnection();

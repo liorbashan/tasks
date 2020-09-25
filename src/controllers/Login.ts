@@ -58,7 +58,7 @@ export class LoginController {
             email: user.email,
             spaceId: user.spaceId,
             emailVerified: user.emailVerified,
-            groups: [],
+            role: user.role,
             picture: user.picture,
         };
         const options: SignOptions = {

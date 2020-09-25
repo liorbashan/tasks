@@ -1,3 +1,4 @@
+import { DeleteResult } from './../types/DeleteResult';
 import { logger } from './../../utils/Logger';
 import { Context } from './../../models/Context';
 import { Container } from 'typedi';
@@ -55,5 +56,14 @@ export class ShopItemResolver {
             throw new Error(error);
         });
         return shopItem ? new ShopItem(shopItem) : null;
+    }
+
+    @Mutation((returns) => DeleteResult, { nullable: true })
+    async DeleteShopItem(@Ctx() ctx: Context, @Arg('ID', (type) => String!) id: string): Promise<DeleteResult> {
+        const result = await this.service.delete(id).catch((error) => {
+            logger.error(error);
+            throw new Error(error);
+        });
+        return new DeleteResult(result);
     }
 }

@@ -42,6 +42,10 @@ export class UserResolver {
     @Mutation((returns) => User, { nullable: true })
     @UseMiddleware(isAuth)
     async AddUser(@Ctx() ctx: Context, @Arg('AddUserInput') input: AddUserInput): Promise<User | null> {
+        const userRole = ctx.payload.role;
+        if (userRole !== 'admin') {
+            throw new Error('Not Authorized');
+        }
         const userModel: UserEntity | null = await this.userService.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -52,6 +56,10 @@ export class UserResolver {
     @Mutation((returns) => User, { nullable: true })
     @UseMiddleware(isAuth)
     async UpdateUser(@Ctx() ctx: Context, @Arg('UpdateUserInput') input: UpdateUserInput): Promise<User | null> {
+        const userRole = ctx.payload.role;
+        if (userRole !== 'admin') {
+            throw new Error('Not Authorized');
+        }
         const userModel: UserEntity | null = await this.userService.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
