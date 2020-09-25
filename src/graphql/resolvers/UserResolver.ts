@@ -1,3 +1,4 @@
+import { IJWTPayload } from './../../models/IJWTPayload';
 import { isAuth } from './../auth/auth';
 import { Container } from 'typedi';
 import { logger } from './../../utils/Logger';
@@ -56,8 +57,9 @@ export class UserResolver {
     @Mutation((returns) => User, { nullable: true })
     @UseMiddleware(isAuth)
     async UpdateUser(@Ctx() ctx: Context, @Arg('UpdateUserInput') input: UpdateUserInput): Promise<User | null> {
-        const userRole = ctx.payload.role;
-        if (userRole !== 'admin') {
+        // Verify user can only update himself (admin users can update everyone):
+        const payload: IJWTPayload = ctx.payload;
+        if (payload.email !== input.email && payload.role !== 'admin') {
             throw new Error('Not Authorized');
         }
         const userModel: UserEntity | null = await this.userService.update(input).catch((error) => {

@@ -1,10 +1,11 @@
+import { isAuth } from './../auth/auth';
 import { DeleteResult } from './../types/DeleteResult';
 import { logger } from './../../utils/Logger';
 import { Context } from './../../models/Context';
 import { Container } from 'typedi';
 import { IShopItemRepository } from './../../interfaces/IShopItemRepository';
 import { ShopItem, ShopItemInput } from '../types/ShopItem';
-import { Resolver, Query, Ctx, Arg, Mutation } from 'type-graphql';
+import { Resolver, Query, Ctx, Arg, Mutation, UseMiddleware } from 'type-graphql';
 import { ShopItemEntity } from '../../models/shopItem';
 
 @Resolver((of) => ShopItem)
@@ -41,6 +42,7 @@ export class ShopItemResolver {
     }
 
     @Mutation((returns) => ShopItem, { nullable: true })
+    @UseMiddleware(isAuth)
     async AddShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput) input: ShopItemInput): Promise<ShopItem | null> {
         const shopItem: ShopItemEntity | null = await this.service.add(input).catch((error) => {
             logger.error(error);
@@ -50,6 +52,7 @@ export class ShopItemResolver {
     }
 
     @Mutation((returns) => ShopItem, { nullable: true })
+    @UseMiddleware(isAuth)
     async UpdateShopItem(@Ctx() ctx: Context, @Arg('ShopItemInput', (type) => ShopItemInput) input: ShopItemInput): Promise<ShopItem | null> {
         const shopItem: ShopItemEntity | null = await this.service.update(input).catch((error) => {
             logger.error(error);
@@ -59,6 +62,7 @@ export class ShopItemResolver {
     }
 
     @Mutation((returns) => DeleteResult, { nullable: true })
+    @UseMiddleware(isAuth)
     async DeleteShopItem(@Ctx() ctx: Context, @Arg('ID', (type) => String!) id: string): Promise<DeleteResult> {
         const result = await this.service.delete(id).catch((error) => {
             logger.error(error);

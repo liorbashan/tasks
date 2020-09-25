@@ -29,19 +29,19 @@ export class UserRepository implements IUserRepository {
     async update(data: Partial<UpdateUserInput>): Promise<UserEntity | null> {
         let model: UserEntity | null = null;
         try {
-            const id: string = data.id!;
-            delete data.id;
+            const email: string = data.email!;
+            delete data.email;
             const query = this.getDbConnection()
                 .createQueryBuilder()
                 .update('users')
                 .set(data as QueryDeepPartialEntity<UpdateUserInput>)
-                .where(`"id"=:id`, { id });
+                .where(`"email"=:email`, { email });
             const dbResult: any = await query.execute().catch((error) => {
                 logger.error(error);
                 throw new Error(error);
             });
             if (dbResult) {
-                model = await this.get({ id });
+                model = await this.get({ email });
             }
             return model;
         } catch (error) {

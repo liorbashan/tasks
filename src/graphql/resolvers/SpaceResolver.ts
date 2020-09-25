@@ -1,3 +1,4 @@
+import { isAuth } from './../auth/auth';
 import { IUserRepository } from './../../interfaces/IUserRepository';
 import { UserEntity } from './../../models/user/UserEntity';
 import { User } from './../types/User';
@@ -12,7 +13,7 @@ import { Context } from './../../models/Context';
 import { Container } from 'typedi';
 import { ISpaceRepository } from './../../interfaces/ISpaceRepository';
 import { Space, SpaceInput } from '../types/Space';
-import { Resolver, Query, Ctx, Arg, Mutation, FieldResolver, Root } from 'type-graphql';
+import { Resolver, Query, Ctx, Arg, Mutation, FieldResolver, Root, UseMiddleware } from 'type-graphql';
 import { IShoppingListRepository } from '../../interfaces/IShoppingListRepository';
 
 @Resolver((of) => Space)
@@ -58,7 +59,12 @@ export class SpaceResolver {
     }
 
     @Mutation((returns) => Space, { nullable: true })
+    @UseMiddleware(isAuth)
     async AddSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<Space | null> {
+        const userRole = ctx.payload.role;
+        if (userRole !== 'admin') {
+            throw new Error('Not Authorized');
+        }
         const space: SpaceEntity | null = await this.service.add(input).catch((error) => {
             logger.error(error);
             throw new Error(error);
@@ -67,7 +73,12 @@ export class SpaceResolver {
     }
 
     @Mutation((returns) => Space, { nullable: true })
+    @UseMiddleware(isAuth)
     async UpdateSpace(@Ctx() ctx: Context, @Arg('SpaceInput', (type) => SpaceInput) input: SpaceInput): Promise<Space | null> {
+        const userRole = ctx.payload.role;
+        if (userRole !== 'admin') {
+            throw new Error('Not Authorized');
+        }
         const space: SpaceEntity | null = await this.service.update(input).catch((error) => {
             logger.error(error);
             throw new Error(error);

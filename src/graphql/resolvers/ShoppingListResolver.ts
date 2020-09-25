@@ -1,3 +1,4 @@
+import { isAuth } from './../auth/auth';
 import { ShoppingListEntity } from './../../models/shoppingList/ShoppingListEntity';
 import { ShopItemEntity } from '../../models/shopItem/ShopItemEntity';
 import { IShopItemRepository } from './../../interfaces/IShopItemRepository';
@@ -6,7 +7,7 @@ import { Context } from './../../models/Context';
 import { Container } from 'typedi';
 import { IShoppingListRepository } from './../../interfaces/IShoppingListRepository';
 import { ShoppingList, ShoppingListInput } from '../types/ShoppingList';
-import { Resolver, Query, Ctx, Arg, Mutation, FieldResolver, Root } from 'type-graphql';
+import { Resolver, Query, Ctx, Arg, Mutation, FieldResolver, Root, UseMiddleware } from 'type-graphql';
 import { ShopItem } from '../types/ShopItem';
 
 @Resolver((of) => ShoppingList)
@@ -46,6 +47,7 @@ export class ShoppingListResolver {
     }
 
     @Mutation((returns) => ShoppingList, { nullable: true })
+    @UseMiddleware(isAuth)
     async AddShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput) input: ShoppingListInput): Promise<ShoppingList | null> {
         const shoppingList: ShoppingListEntity | null = await this.service.add(input).catch((error) => {
             logger.error(error);
@@ -55,6 +57,7 @@ export class ShoppingListResolver {
     }
 
     @Mutation((returns) => ShoppingList, { nullable: true })
+    @UseMiddleware(isAuth)
     async UpdateShoppingList(@Ctx() ctx: Context, @Arg('ShoppingListInput', (type) => ShoppingListInput) input: ShoppingListInput): Promise<ShoppingList | null> {
         const shoppingList: ShoppingListEntity | null = await this.service.update(input).catch((error) => {
             logger.error(error);
