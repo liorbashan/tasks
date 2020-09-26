@@ -21,6 +21,7 @@ export class TaskRepository implements ITaskRepository {
             .addSelect(`"completedAt"`, 'completedAt')
             .addSelect(`"dueDate"`, 'dueDate')
             .addSelect(`"userId"`, 'userId')
+            .addSelect(`"category"`, 'category')
             .from('tasks', 'tasks')
             .where('1=1');
 
@@ -35,6 +36,9 @@ export class TaskRepository implements ITaskRepository {
         }
         if (input?.spaceId) {
             query.andWhere(`"spaceId"=:spaceId`, { spaceId: input.spaceId });
+        }
+        if (input?.category) {
+            query.andWhere(`"category"=:category`, { category: input.category });
         }
 
         const dbResult: any = await query.getRawOne().catch((error) => {
@@ -59,6 +63,7 @@ export class TaskRepository implements ITaskRepository {
             .addSelect(`"completedAt"`, 'completedAt')
             .addSelect(`"dueDate"`, 'dueDate')
             .addSelect(`"userId"`, 'userId')
+            .addSelect(`"category"`, 'category')
             .from('tasks', 'tasks')
             .where('1=1');
 
@@ -73,6 +78,9 @@ export class TaskRepository implements ITaskRepository {
         }
         if (input?.spaceId) {
             query.andWhere(`"spaceId"=:spaceId`, { spaceId: input.spaceId });
+        }
+        if (input?.category) {
+            query.andWhere(`"category"=:category`, { category: input.category });
         }
 
         const dbResult: any = await query.getRawMany().catch((error) => {

@@ -42,6 +42,7 @@ CREATE TABLE tasks (
     "id" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     "title" VARCHAR NOT NULL UNIQUE,
     "description" VARCHAR NULL,
+    "category" VARCHAR NULL,
     "spaceId" uuid NOT NULL REFERENCES spaces,
     "completed" BOOLEAN NOT NULL DEFAULT false,
     "completedAt" TIMESTAMPTZ NULL,

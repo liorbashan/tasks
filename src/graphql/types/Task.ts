@@ -17,6 +17,8 @@ export class Task {
     public completedAt?: string;
     @Field({ nullable: true })
     public dueDate?: string;
+    @Field({ nullable: true })
+    public category?: string;
     @Field()
     public userId: string;
 
@@ -29,6 +31,7 @@ export class Task {
         this.completedAt = task.completedAt;
         this.dueDate = task.dueDate;
         this.userId = task.userId;
+        this.category = task.category;
     }
 
     get(): TaskEntity {
@@ -54,4 +57,6 @@ export class TaskInput {
     public dueDate?: string;
     @Field({ nullable: true })
     public userId?: string;
+    @Field({ nullable: true })
+    public category?: string;
 }

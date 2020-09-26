@@ -1,3 +1,6 @@
+import { IUserRepository } from './../../interfaces/IUserRepository';
+import { UserEntity } from './../../models/user/UserEntity';
+import { User } from './../types/User';
 import { isAuth } from './../auth/auth';
 import { DeleteResult } from './../types/DeleteResult';
 import { logger } from './../../utils/Logger';
@@ -5,14 +8,17 @@ import { Context } from './../../models/Context';
 import { Container } from 'typedi';
 import { ITaskRepository } from './../../interfaces/ITaskRepository';
 import { Task, TaskInput } from '../types/Task';
-import { Resolver, Query, Ctx, Arg, Mutation, UseMiddleware } from 'type-graphql';
+import { Resolver, Query, Ctx, Arg, Mutation, UseMiddleware, FieldResolver, Root } from 'type-graphql';
 import { TaskEntity } from '../../models/task';
 
 @Resolver((of) => Task)
 export class TaskResolver {
-    constructor(private taskService: ITaskRepository) {
+    constructor(private taskService: ITaskRepository, private userService: IUserRepository) {
         if (!taskService) {
             this.taskService = Container.get('TaskService');
+        }
+        if (!userService) {
+            this.userService = Container.get('UserService');
         }
     }
 
@@ -69,5 +75,18 @@ export class TaskResolver {
             throw new Error(error);
         });
         return new DeleteResult(result);
+    }
+
+    @FieldResolver((type) => [User], { nullable: true })
+    async User(@Root() task: Task): Promise<User | null> {
+        let user: User | null = null;
+        const userEntity: UserEntity | null = await this.userService.get({ id: task.get().userId }).catch((error) => {
+            logger.error(error);
+            throw new Error(error);
+        });
+        if (userEntity) {
+            user = new User(userEntity);
+        }
+        return user;
     }
 }
