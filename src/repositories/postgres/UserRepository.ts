@@ -1,3 +1,4 @@
+import { Common } from './../../utils/Common';
 import { QueryUserInput, UpdateUserInput, AddUserInput } from '../../graphql/types/User';
 import { logger } from './../../utils/Logger';
 import { UserEntityFactory } from '../../models/user/UserEntityFactory';
@@ -50,6 +51,9 @@ export class UserRepository implements IUserRepository {
     }
     async get(data: Partial<UserEntity>): Promise<UserEntity | null> {
         let model: UserEntity | null = null;
+        if (Common.allPropertiesAreNull(data)) {
+            return model;
+        }
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')

@@ -1,3 +1,4 @@
+import { Common } from './../../utils/Common';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { logger } from './../../utils/Logger';
 import { Connection, getConnection } from 'typeorm';
@@ -11,6 +12,9 @@ export class TaskRepository implements ITaskRepository {
 
     async get(input: Partial<TaskInput>): Promise<TaskEntity | null> {
         let model: TaskEntity | null = null;
+        if (Common.allPropertiesAreNull(input)) {
+            return model;
+        }
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')

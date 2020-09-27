@@ -15,4 +15,13 @@ export class Common {
         }
         return dbConnection;
     }
+
+    public static allPropertiesAreNull(obj: any): boolean {
+        for (const key in obj) {
+            if (obj[key] !== null && obj[key] !== '') {
+                return false;
+            }
+        }
+        return true;
+    }
 }

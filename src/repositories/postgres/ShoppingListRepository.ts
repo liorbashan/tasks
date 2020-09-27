@@ -1,3 +1,4 @@
+import { Common } from './../../utils/Common';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { logger } from './../../utils/Logger';
 import { ShoppingListEntity } from '../../models/shoppingList/ShoppingListEntity';
@@ -11,6 +12,9 @@ export class ShoppingListRepository implements IShoppingListRepository {
 
     async get(input: ShoppingListInput): Promise<ShoppingListEntity | null> {
         let model: ShoppingListEntity | null = null;
+        if (Common.allPropertiesAreNull(input)) {
+            return model;
+        }
         const query = this.getDbConnection()
             .createQueryBuilder()
             .select(`"id"`, 'id')
