@@ -77,7 +77,7 @@ export class TaskResolver {
         return new DeleteResult(result);
     }
 
-    @FieldResolver((type) => [User], { nullable: true })
+    @FieldResolver((type) => User, { nullable: true })
     async User(@Root() task: Task): Promise<User | null> {
         let user: User | null = null;
         const userEntity: UserEntity | null = await this.userService.get({ id: task.get().userId }).catch((error) => {
