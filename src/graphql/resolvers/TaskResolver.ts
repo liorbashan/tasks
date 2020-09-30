@@ -10,6 +10,7 @@ import { ITaskRepository } from './../../interfaces/ITaskRepository';
 import { Task, TaskInput } from '../types/Task';
 import { Resolver, Query, Ctx, Arg, Mutation, UseMiddleware, FieldResolver, Root } from 'type-graphql';
 import { TaskEntity } from '../../models/task';
+import { generateFilterType } from 'type-graphql-filter';
 
 @Resolver((of) => Task)
 export class TaskResolver {
@@ -23,7 +24,11 @@ export class TaskResolver {
     }
 
     @Query((returns) => [Task], { nullable: true })
-    async QueryTasks(@Ctx() ctx: Context, @Arg('TaskInput', (type) => TaskInput, { nullable: true }) input: TaskInput): Promise<Task[]> {
+    async QueryTasks(
+        @Ctx() ctx: Context,
+        @Arg('TaskInput', (type) => TaskInput, { nullable: true }) input: TaskInput,
+        @Arg('filter', generateFilterType(Task), { nullable: true }) filter: any
+    ): Promise<Task[]> {
         const tasks: Task[] = [];
         const models: TaskEntity[] = await this.taskService.getAll(input).catch((error) => {
             logger.error(error);

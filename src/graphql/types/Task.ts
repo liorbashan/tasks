@@ -1,5 +1,6 @@
 import { TaskEntity } from '../../models/task/TaskEntity';
 import { ObjectType, Field, InputType } from 'type-graphql';
+import { Filter } from 'type-graphql-filter';
 
 @ObjectType()
 export class Task {
@@ -14,6 +15,7 @@ export class Task {
     @Field()
     public completed: boolean;
     @Field({ nullable: true })
+    @Filter(['gt', 'lt'], (type) => Number)
     public completedAt?: string;
     @Field({ nullable: true })
     public dueDate?: string;

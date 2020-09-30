@@ -86,6 +86,9 @@ export class TaskRepository implements ITaskRepository {
         if (input?.category) {
             query.andWhere(`"category"=:category`, { category: input.category });
         }
+        if (typeof input?.completed !== 'undefined') {
+            query.andWhere(`"completed"=:completed`, { completed: input.completed });
+        }
 
         const dbResult: any = await query.getRawMany().catch((error) => {
             logger.error(error);
@@ -119,6 +122,9 @@ export class TaskRepository implements ITaskRepository {
         try {
             const id: string = input.id!;
             delete input.id;
+            if (input.completed) {
+                input.completedAt = new Date(Date.now()).toLocaleDateString();
+            }
             const query = this.getDbConnection()
                 .createQueryBuilder()
                 .update('tasks')
