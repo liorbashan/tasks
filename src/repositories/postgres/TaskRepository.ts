@@ -69,7 +69,8 @@ export class TaskRepository implements ITaskRepository {
             .addSelect(`"userId"`, 'userId')
             .addSelect(`"category"`, 'category')
             .from('tasks', 'tasks')
-            .where('1=1');
+            .where('1=1')
+            .orderBy(`"dueDate"`, 'ASC');
 
         if (input?.id) {
             query.andWhere(`"id"=:id`, { id: input.id });
