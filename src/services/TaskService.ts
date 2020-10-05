@@ -1,6 +1,7 @@
 import { TaskInput } from '../graphql/types/Task';
 import { ITaskRepository } from './../interfaces/ITaskRepository';
 import { TaskEntity } from '../models/task';
+import { BadRequestError } from 'routing-controllers';
 
 export class TaskService implements ITaskRepository {
     constructor(protected taskRepo: ITaskRepository) {}
@@ -24,6 +25,12 @@ export class TaskService implements ITaskRepository {
         return result;
     }
     async update(input: Partial<TaskInput>): Promise<TaskEntity | null> {
+        const task: TaskEntity | null = await this.get(input).catch((error) => {
+            throw new Error(error);
+        });
+        if (task?.completed) {
+            throw new BadRequestError('Completed tasks cannot be updated');
+        }
         const result: TaskEntity | null = await this.taskRepo.update(input).catch((error) => {
             throw new Error(error);
         });

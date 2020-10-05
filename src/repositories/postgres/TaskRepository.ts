@@ -32,18 +32,18 @@ export class TaskRepository implements ITaskRepository {
         if (input?.id) {
             query.andWhere(`"id"=:id`, { id: input.id });
         }
-        if (input?.title) {
-            query.andWhere(`"title"=:title`, { title: input.title });
-        }
-        if (input?.userId) {
-            query.andWhere(`"userId"=:userId`, { userId: input.userId });
-        }
-        if (input?.spaceId) {
-            query.andWhere(`"spaceId"=:spaceId`, { spaceId: input.spaceId });
-        }
-        if (input?.category) {
-            query.andWhere(`"category"=:category`, { category: input.category });
-        }
+        // if (input?.title) {
+        //     query.andWhere(`"title"=:title`, { title: input.title });
+        // }
+        // if (input?.userId) {
+        //     query.andWhere(`"userId"=:userId`, { userId: input.userId });
+        // }
+        // if (input?.spaceId) {
+        //     query.andWhere(`"spaceId"=:spaceId`, { spaceId: input.spaceId });
+        // }
+        // if (input?.category) {
+        //     query.andWhere(`"category"=:category`, { category: input.category });
+        // }
 
         const dbResult: any = await query.getRawOne().catch((error) => {
             logger.error(error);
